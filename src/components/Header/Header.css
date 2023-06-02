@@ -3,6 +3,7 @@
   flex-direction: row;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
 }
 
 .header__burger {
@@ -46,11 +47,20 @@
 
   border: 2px solid rgba(170, 170, 170, .2);
   border-radius: 50px;
+}
 
-
+@media screen and (max-width: 880px) {
+  .profile-button {
+    display: none;
+  }
 }
 
 .profile-button__icon {
   width: 12px;
   height: 14px;
+}
+
+.navigation__list-open {
+  display: flex;
+  flex-direction: column;
 }

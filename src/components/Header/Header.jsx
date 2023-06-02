@@ -3,11 +3,28 @@ import logoIcon from '../../images/logo.svg'
 import burgerIcon from '../../images/burger.svg'
 import profileIcon from '../../images/profile_icon.svg'
 import {Link} from "react-router-dom";
+import {useState, useEffect} from "react";
+
 export default function Header() {
 
-  const activeLink = '/'
+  // меню для малой ширины экрана
+  const [isOpenMenu, setIsOpenMenu] = useState(false);
 
-  const isOpenMenu = true
+  const handleMenuClick = () => {
+    setIsOpenMenu(!isOpenMenu);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 600) {
+        setIsOpenMenu(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const activeLink = '/'
 
   const navLink = [
     { title: 'Главная', path: '/' },
@@ -24,7 +41,7 @@ export default function Header() {
 
       <nav className={'navigation'}>
 
-        <button className={'header__burger'} onClick={() => {}}>
+        <button className={'header__burger'} onClick={handleMenuClick}>
           <img src={burgerIcon} />
         </button>
 
@@ -42,7 +59,7 @@ export default function Header() {
 
         {!isOpenMenu && (
           <ul className={'navigation__list'}>
-            {navLink.map((link, index) => (
+            {navLink.slice(1).map((link, index) => (
               <li key={index} className={`navigation__item ${activeLink === link.path ? "navigation__item-active" : ""}`}>
                 <Link to={link.path}>
                   {link.title}
