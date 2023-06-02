@@ -50,7 +50,7 @@
 }
 
 @media screen and (max-width: 880px) {
-  .profile-button {
+  .profile-button_hidden {
     display: none;
   }
 }
