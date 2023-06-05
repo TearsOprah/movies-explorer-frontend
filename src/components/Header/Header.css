@@ -1,133 +1,21 @@
-/*.header {*/
-/*  display: flex;*/
-/*  flex-direction: row;*/
-/*  width: 100%;*/
-/*  justify-content: space-between;*/
-/*  align-items: center;*/
-/*  height: 74px;*/
-/*  box-sizing: border-box;*/
-/*  padding-left: 70px;*/
-/*  padding-right: 70px;*/
-/*}*/
-
-/*.header__burger {*/
-/*  margin: 0;*/
-/*  padding: 0;*/
-/*  display: none;*/
-/*  border: none;*/
-/*  background-color: transparent;*/
-/*  cursor: pointer;*/
-/*}*/
-
-/*@media screen and (max-width: 880px) {*/
-/*  .header__burger {*/
-/*    display: block;*/
-/*  }*/
-/*}*/
-
-/*.header__logo {*/
-/*  width: 38px;*/
-/*  height: 38px;*/
-/*}*/
-
 .header {
+  box-sizing: border-box;
+  padding-left: 70px;
+  padding-right: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  height: 74px;
 }
 
 .header__logo {
-  font-size: 24px;
-  font-weight: bold;
+  width: 38px;
+  height: 38px;
 }
 
-.navigation {
-  display: flex;
-  align-items: center;
-}
-
-.navigation__container {
-  display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.navigation__list {
-  display: flex;
-  list-style-type: none;
-}
-
-.navigation__item {
-  margin-right: 20px;
-}
-
-.navigation__item_hidden {
-  display: none;
-}
-
-.burger-button {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 997;
-}
-
-@media (max-width: 768px) {
-  .navigation__container {
-    display: none;
-    position: relative;
-  }
-
-  .burger-button {
-    display: block;
-  }
-
-  .navigation__container_active {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 50%;
-    background-color: #fff;
-    z-index: 998;
-  }
-
-  .close-button {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-  }
-
-  .navigation__list {
-    flex-direction: column;
-    margin: 0;
-    padding: 0;
-  }
-
-  .navigation__item {
-    margin-bottom: 10px;
-  }
-
-  .navigation__item_hidden {
-    display: block;
-  }
-
-  .overlay {
-    cursor: pointer;
+@media (max-width: 880px) {
+  .header {
+    padding-left: 30px;
+    padding-right: 30px;
   }
 }
-

@@ -14,13 +14,18 @@
   border-radius: 50px;
 }
 
+.profile-button__icon {
+  width: 12px;
+  height: 14px;
+}
+
 @media screen and (max-width: 880px) {
   .profile-button_hidden {
     display: none;
   }
-}
 
-.profile-button__icon {
-  width: 12px;
-  height: 14px;
+  /*.profile-button {*/
+  /*  position: fixed;*/
+  /*  bottom: 90px;*/
+  /*}*/
 }

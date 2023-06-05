@@ -1,12 +1,19 @@
 import './Navigation.css'
-import closerIcon from "../../images/closer.svg";
-import burgerIcon from "../../images/burger.svg";
-import {Link} from "react-router-dom";
-import profileIcon from "../../images/profile_icon.svg";
 import ProfileButton from "../ProfileButton/ProfileButton";
-export default function Navigation({ navLink, activeLink, handleMenuClick, isOpenMenu }) {
+export default function Navigation({ isMenuOpen, closeMenu, toggleMenu }) {
   return (
-    <nav className={'navigation'}>
+    <nav className="navigation">
+      <div className={`navigation__container ${isMenuOpen ? 'navigation__container_active' : ''}`}>
+        {isMenuOpen && <button className="close-button" onClick={closeMenu}></button>}
+        <ul className={'navigation__list'}>
+          <li className="navigation__item navigation__item_hidden">Главная</li>
+          <li className="navigation__item navigation__item_active">Фильмы</li>
+          <li className="navigation__item">Сохраненные фильмы</li>
+        </ul>
+        {isMenuOpen && <ProfileButton />}
+      </div>
+      <button className={`burger-button`} onClick={toggleMenu}></button>
+      {isMenuOpen && <div className="overlay" onClick={closeMenu}></div>}
     </nav>
   )
 }
