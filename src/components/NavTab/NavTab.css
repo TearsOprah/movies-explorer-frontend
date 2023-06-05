@@ -1,0 +1,37 @@
+.landing-navigation {
+  display: flex;
+  gap: 30px;
+}
+
+.landing-navigation__button {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  padding: 8px 20px;
+  color: black;
+  appearance: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.register-button {
+  background-color: transparent;
+}
+
+.login-button {
+  color: white;
+  background-color: black;
+  border-radius: 3px;
+}
+
+@media (max-width: 600px) {
+  .landing-navigation {
+    gap: 14px;
+  }
+
+  .landing-navigation__button {
+    font-size: 10px;
+    padding: 5px 12px;
+  }
+}
