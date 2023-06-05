@@ -5,85 +5,49 @@ import profileIcon from '../../images/profile_icon.svg'
 import closerIcon from '../../images/closer.svg'
 import {Link} from "react-router-dom";
 import {useState, useEffect} from "react";
+import Navigation from "../Navigation/Navigation";
+import ProfileButton from "../ProfileButton/ProfileButton";
 
 export default function Header() {
 
-  // меню для малой ширины экрана
-  const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
-  const handleMenuClick = () => {
-    setIsOpenMenu(!isOpenMenu);
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 600) {
-        setIsOpenMenu(false);
-      }
+      closeMenu();
     };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
-  const activeLink = '/'
-
-  const navLink = [
-    { title: 'Главная', path: '/' },
-    { title: 'Фильмы', path: '/' },
-    { title: 'Сохраненные фильмы', path: '/' },
-  ]
-
   return (
-    <header className={'header'}>
-
-      <div className={'header__logo'}>
-        <img className={'logo'} src={logoIcon}/>
-      </div>
-
-      <nav className={'navigation'}>
-
-        <button className={'header__burger'} onClick={handleMenuClick}>
-          <img src={isOpenMenu ? closerIcon : burgerIcon} />
-        </button>
-
-        {isOpenMenu && (
-          <>
-            <ul className={`navigation__list ${isOpenMenu ? 'navigation__list-open' : ''}`}>
-              {navLink.map((link, index) => (
-                <li key={index} className={`navigation__item ${activeLink === link.path ? "navigation__item-active" : ""}`}>
-                  <Link to={link.path} className={'navigation__link'} onClick={() => {}}>
-                    {link.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-
-            <Link className={'profile-button'} to={'/'}>
-              <img className={'profile-button__icon'} src={profileIcon}/>
-              <p>Аккаунт</p>
-            </Link>
-          </>
-        )}
-
-        {!isOpenMenu && (
+    <header className="header">
+      <div className="header__logo">Логотип</div>
+      <nav className="navigation">
+        <div className={`navigation__container ${isMenuOpen ? 'navigation__container_active' : ''}`}>
+          {isMenuOpen && <button className="close-button" onClick={closeMenu}>Закрыть</button>}
           <ul className={'navigation__list'}>
-            {navLink.slice(1).map((link, index) => (
-              <li key={index} className={`navigation__item ${activeLink === link.path ? "navigation__item-active" : ""}`}>
-                <Link to={link.path}>
-                  {link.title}
-                </Link>
-              </li>
-            ))}
+            <li className="navigation__item navigation__item_hidden">Главная</li>
+            <li className="navigation__item">Фильмы</li>
+            <li className="navigation__item">Сохраненные фильмы</li>
           </ul>
-        )}
-
+          {isMenuOpen && <ProfileButton />}
+        </div>
+        <button className={`burger-button`} onClick={toggleMenu}>Меню</button>
+        {isMenuOpen && <div className="overlay" onClick={closeMenu}></div>}
       </nav>
-
-      <Link className={'profile-button profile-button_hidden'} to={'/'}>
-        <img className={'profile-button__icon'} src={profileIcon}/>
-        <p>Аккаунт</p>
-      </Link>
-
+      {!isMenuOpen && <ProfileButton hidden={true} />}
     </header>
-  )
-}
+  );
+};

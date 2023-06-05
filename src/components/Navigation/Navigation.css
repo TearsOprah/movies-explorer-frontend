@@ -1,0 +1,26 @@
+/*.navigation__list {*/
+/*  display: flex;*/
+/*  gap: 16px;*/
+/*  list-style-type: none;*/
+/*}*/
+
+/*@media screen and (max-width: 880px) {*/
+/*  .navigation__list {*/
+/*    display: none;*/
+/*  }*/
+/*}*/
+
+/*.navigation__list-open {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  position: fixed;*/
+/*  top: 0;*/
+/*  bottom: 0;*/
+/*  right: 0;*/
+/*}*/
+
+/*.navigation__link {*/
+/*  font-weight: 500;*/
+/*  font-size: 13px;*/
+/*  line-height: 18px;*/
+/*}*/
