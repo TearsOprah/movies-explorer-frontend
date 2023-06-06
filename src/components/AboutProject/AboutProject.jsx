@@ -1,8 +1,8 @@
 import './AboutProject.css'
 export default function AboutProject() {
   return (
-    <section className={'about-project'}>
-      <h2 className={'about-project__title'}>О проекте</h2>
+    <section className={'about-project main-section'}>
+      <h2 className={'about-project__title main-title'}>О проекте</h2>
       <div className={'about-project__container'}>
         <div className={'about-project__item'}>
           <h3 className={'about-project__item-title'}>Дипломный проект включал 5 этапов</h3>
