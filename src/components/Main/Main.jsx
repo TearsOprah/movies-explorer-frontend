@@ -1,15 +1,13 @@
 import './Main.css'
-import Header from "../Header/Header";
-import NavTab from "../NavTab/NavTab";
 import Promo from "../Promo/Promo";
+import AboutProject from "../AboutProject/AboutProject";
 
 export default function Main() {
 
   return (
     <main className={'main'}>
       <Promo />
-
-      <h1>Main</h1>
+      <AboutProject />
     </main>
   )
 }
