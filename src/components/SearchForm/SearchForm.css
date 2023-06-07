@@ -91,3 +91,41 @@
 .toggle-container input[type="checkbox"]:not(:checked) + .toggle-switch {
   background-color: #F5F5F5;
 }
+
+@media (max-width: 880px) {
+  .search-form {
+    padding: 80px 30px 61px;
+  }
+
+  .search-form__filter {
+    flex-direction: row-reverse;
+  }
+
+  .search-form__container {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .search-form {
+    padding: 90px 14px 51px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .search-form__container {
+    margin-bottom: 41px;
+    padding-bottom: 15px;
+  }
+
+  .search-form__filter {
+    align-self: center;
+    font-size: 11px;
+  }
+
+  .search-form__input {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+}
