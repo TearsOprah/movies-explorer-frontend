@@ -38,7 +38,7 @@ export default function App() {
       <Routes>
         <Route path={'/'} element={<Main />} />
         <Route path={'/movies'} element={<Movies isMenuOpen={isMenuOpen} closeMenu={closeMenu} toggleMenu={toggleMenu} />} />
-        <Route path={'/saved-movies'} element={<SavedMovies />} />
+        <Route path={'/saved-movies'} element={<SavedMovies isMenuOpen={isMenuOpen} closeMenu={closeMenu} toggleMenu={toggleMenu} />} />
         <Route path={'/profile'} element={<Profile />} />
         <Route path={'/signin'} element={<Login />} />
         <Route path={'/signup'} element={<Register />} />

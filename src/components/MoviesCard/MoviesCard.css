@@ -29,6 +29,10 @@
   line-height: 16px;
 }
 
+.card_hovered:hover {
+  cursor: pointer;
+}
+
 .card__like {
   background: url("../../images/like_disable.svg");
   margin-right: 8px;
@@ -40,6 +44,19 @@
 .card__like_active {
   background: url("../../images/like_active.svg");
 }
+
+.card_hovered .card__delete {
+  display: block;
+}
+
+.card__delete {
+  display: none;
+  background: url("../../images/delete.svg");
+  width: 7px;
+  height: 7px;
+  border: none;
+}
+
 
 .card__duration {
   font-style: normal;
