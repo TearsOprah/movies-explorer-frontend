@@ -15,9 +15,13 @@
 }
 
 .navigation__item {
-  font-weight: 500;
+  font-weight: 400;
   font-size: 13px;
   line-height: 18px;
+}
+
+.navigation__item_active {
+  font-weight: 500;
 }
 
 .navigation__item_hidden {
@@ -95,6 +99,7 @@
     margin-bottom: 10px;
     font-size: 18px;
     line-height: 22px;
+    font-weight: 500;
   }
 
   .navigation__item_hidden {
