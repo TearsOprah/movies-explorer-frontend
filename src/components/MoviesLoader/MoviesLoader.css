@@ -1,0 +1,27 @@
+.movies-loader {
+  padding: 50px 70px 80px;
+}
+
+.movies-loader__button {
+  width: 100%;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  border: none;
+  height: 36px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 880px) {
+  .movies-loader {
+    padding: 50px 30px 80px;
+  }
+}
+
+@media (max-width: 600px) {
+  .movies-loader {
+    padding: 50px 10px 80px;
+  }
+}
