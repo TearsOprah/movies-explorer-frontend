@@ -48,7 +48,8 @@
 .about-me__photo {
   height: 327px;
   width: 270px;
-  object-fit: contain;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
 @media (max-width: 880px) {
