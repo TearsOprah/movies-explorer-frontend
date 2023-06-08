@@ -1,0 +1,162 @@
+.auth {
+  display: flex;
+  flex-direction: column;
+  width: 390px;
+  padding-top: 70px;
+  padding-bottom: 70px;
+  box-sizing: border-box;
+  align-items: start;
+  margin: 0 auto;
+  min-height: 100vh;
+  justify-content: space-between;
+}
+
+.auth__container {
+  width: 100%;
+}
+
+.auth__head {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.auth__logo {
+  height: 38px;
+  width: 38px;
+}
+
+.auth__title {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+}
+
+.auth__inputs-container {
+  margin-top: 40px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.auth__input-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.auth__input-name {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #A0A0A0;
+}
+
+.auth__input {
+  width: 100%;
+  border: none;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: black;
+  border-bottom: 1px #E8E8E8 solid;
+  padding-bottom: 10px;
+}
+
+.active-input {
+  border-bottom: 1px black solid;
+}
+
+.auth__input::placeholder {
+  color: black;
+}
+
+.auth__errors {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #FF4062;
+  margin-top: -18px;
+}
+
+.auth__buttons-block {
+  margin-top: 134px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth__button {
+  width: 100%;
+  border: none;
+  background-color: black;
+  color: white;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  height: 45px;
+  border-radius: 3px;
+}
+
+.auth__sign-block {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.auth__sign-label {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #A0A0A0;
+}
+
+.auth__sign-link {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+}
+
+@media (max-width: 880px) {
+  .auth {
+    padding-top: 232px;
+    padding-bottom: 232px;
+  }
+}
+
+@media (max-width: 600px) {
+  .auth {
+    width: 100%;
+    padding: 56px 30px 30px;
+  }
+
+  .auth__buttons-block {
+    margin-top: 0;
+  }
+
+  .auth__inputs-container {
+    margin-top: 80px;
+  }
+
+  .auth__head {
+    width: 100%;
+    gap: 50px;
+    align-items: center;
+  }
+
+  .auth__button {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}
