@@ -36,7 +36,7 @@ export default function MoviesCard() {
             <button className={'card__delete'}></button>
           ) : (
             <button
-              className={`card__like ${isLiked ? 'card__like_active' : ''}`}
+              className={`card__like ${isLiked ? 'card__like_active' : ''} animation-transition hovered-button`}
               onClick={handleLikeClick}
             ></button>
           )}

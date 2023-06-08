@@ -18,7 +18,7 @@ export default function SearchForm() {
     <form className="search-form" onSubmit={handleSubmit}>
       <div className={"search-form__container"}>
         <input className={"search-form__input"} type="text" placeholder="Фильм" />
-        <button className={"search-form__button"} type="submit">Найти</button>
+        <button className={"search-form__button animation-transition hovered-button"} type="submit">Найти</button>
       </div>
       <div className={"search-form__filter"}>
         <label className={`toggle-container ${shortFilmOnly ? 'checked' : ''}`}>

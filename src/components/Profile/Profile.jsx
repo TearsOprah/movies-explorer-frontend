@@ -71,11 +71,11 @@ export default function Profile() {
 
       ) : (
         <div className={'profile__buttons-block'}>
-          <button className={'profile__edit-button'} onClick={handleEditClick}>
+          <button className={'profile__edit-button animation-transition hovered-button'} onClick={handleEditClick}>
             Редактировать
           </button>
 
-          <button className={'profile__exit-button'} onClick={handleLogoutClick}>
+          <button className={'profile__exit-button animation-transition hovered-button'} onClick={handleLogoutClick}>
             Выйти из аккаунта
           </button>
         </div>

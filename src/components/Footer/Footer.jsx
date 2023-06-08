@@ -7,10 +7,10 @@ export default function Footer() {
         <p className={'footer__copyright'}>© 2023</p>
         <ul className={'footer__links'}>
           <li>
-            <a className={'footer__link'}>Яндекс.Практикум</a>
+            <a className={'footer__link animation-transition hovered-link'}>Яндекс.Практикум</a>
           </li>
           <li>
-            <a className={'footer__link'}>Github</a>
+            <a className={'footer__link animation-transition hovered-link'}>Github</a>
           </li>
         </ul>
       </div>

@@ -29,7 +29,9 @@ export default function Register() {
     <form className={'auth'} onSubmit={handleSubmit}>
       <div className={'auth__container'}>
         <div className={'auth__head'}>
-          <img className={'auth__logo'} src={logoIcon} alt="Логотип" />
+          <a className={'animation-transition hovered-button'} href={'/'}>
+            <img className={'auth__logo'} src={logoIcon} alt="Логотип" />
+          </a>
           <h1 className={'auth__title'}>Добро пожаловать!</h1>
         </div>
         <div className={'auth__inputs-container'}>
@@ -71,10 +73,10 @@ export default function Register() {
       </div>
 
       <div className={'auth__buttons-block'}>
-        <button className={'auth__button'} type="submit">Зарегистрироваться</button>
+        <button className={'auth__button animation-transition hovered-button'} type="submit">Зарегистрироваться</button>
         <div className={'auth__sign-block'}>
           <p className={'auth__sign-label'}>Уже зарегистрированы?</p>
-          <Link className={'auth__sign-link'} to={'/signin'}>Войти</Link>
+          <Link className={'auth__sign-link animation-transition hovered-link'} to={'/signin'}>Войти</Link>
         </div>
       </div>
     </form>

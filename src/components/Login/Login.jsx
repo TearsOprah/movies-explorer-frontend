@@ -23,7 +23,9 @@ export default function Login() {
     <form className={'auth'} onSubmit={handleSubmit}>
       <div className={'auth__container'}>
         <div className={'auth__head'}>
-          <img className={'auth__logo'} src={logoIcon} alt="Логотип" />
+          <a className={'animation-transition hovered-button'} href={'/'}>
+            <img className={'auth__logo'} src={logoIcon} alt="Логотип" />
+          </a>
           <h1 className={'auth__title'}>Рады видеть!</h1>
         </div>
         <div className={'auth__inputs-container'}>
@@ -54,10 +56,10 @@ export default function Login() {
       </div>
 
       <div className={'auth__buttons-block'}>
-        <button className={'auth__button'} type="submit">Войти</button>
+        <button className={'auth__button animation-transition hovered-button'} type="submit">Войти</button>
         <div className={'auth__sign-block'}>
           <p className={'auth__sign-label'}>Ещё не зарегистрированы?</p>
-          <Link className={'auth__sign-link'} to={'/signup'}>Регистрация</Link>
+          <Link className={'auth__sign-link animation-transition hovered-link'} to={'/signup'}>Регистрация</Link>
         </div>
       </div>
     </form>
