@@ -1,5 +1,5 @@
 .profile {
-  width: 410px;
+  max-width: 410px;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
@@ -100,22 +100,18 @@
   .profile {
     width: 100%;
     padding: 70px 30px 40px;
-    position: relative;
+
+    height: calc(100vh - 74px);
+    justify-content: space-between;
   }
 
   .profile__inputs {
-    padding-top: 80px;
+    padding-top: 0;
+    justify-self: self-start;
   }
 
   .profile__buttons-block {
-    position: fixed;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: calc(100% - 40px);
+
   }
 
   .profile__edit-button {
