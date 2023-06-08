@@ -110,6 +110,7 @@
   display: flex;
   gap: 6px;
   justify-content: center;
+  align-items: center;
 }
 
 .auth__sign-label {
@@ -156,6 +157,11 @@
   }
 
   .auth__button {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .auth__sign-label {
     font-size: 12px;
     line-height: 15px;
   }
