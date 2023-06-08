@@ -9,6 +9,7 @@
 }
 
 .navigation__list {
+  margin-left: 65px;
   display: flex;
   list-style-type: none;
   gap: 16px;
@@ -90,6 +91,7 @@
   }
 
   .navigation__list {
+    margin-left: 0;
     flex-direction: column;
     align-items: center;
     gap: 28px;

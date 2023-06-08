@@ -8,6 +8,7 @@
   padding-bottom: 70px;
   min-height: calc(100vh - 74px);
   box-sizing: border-box;
+  gap: 220px;
 }
 
 .profile__title {
