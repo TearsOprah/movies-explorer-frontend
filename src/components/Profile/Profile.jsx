@@ -20,46 +20,47 @@ export default function Profile() {
 
   const handleSaveClick = () => {
     setIsEditing(false);
-    // Дополнительная логика сохранения изменений
+    // логика сохранения изменений
   };
 
   const handleLogoutClick = () => {
-    // Дополнительная логика выхода из аккаунта
+    // логика выхода из аккаунта
   };
 
   return (
     <main className={'profile'}>
-      <h1 className={'profile__title'}>Привет, Михаил!</h1>
 
-      <div className={'profile__inputs'}>
-        <div className={'profile__inputs-block'}>
-          <label htmlFor="name" className={'profile__label'}>
-            Имя:
-          </label>
-          <input
-            type="text"
-            id="name"
-            className={'profile__input'}
-            value={name}
-            onChange={handleNameChange}
-            readOnly={!isEditing}
-          />
-        </div>
-        <div className={'profile__inputs-block'}>
-          <label htmlFor="email" className={'profile__label'}>
-            Email:
-          </label>
-          <input
-            type="email"
-            id="email"
-            className={'profile__input'}
-            value={email}
-            onChange={handleEmailChange}
-            readOnly={!isEditing}
-          />
+      <div className={'profile__container'}>
+        <h1 className={'profile__title'}>Привет, Михаил!</h1>
+        <div className={'profile__inputs'}>
+          <div className={'profile__inputs-block'}>
+            <label htmlFor="name" className={'profile__label'}>
+              Имя:
+            </label>
+            <input
+              type="text"
+              id="name"
+              className={'profile__input'}
+              value={name}
+              onChange={handleNameChange}
+              readOnly={!isEditing}
+            />
+          </div>
+          <div className={'profile__inputs-block'}>
+            <label htmlFor="email" className={'profile__label'}>
+              Email:
+            </label>
+            <input
+              type="email"
+              id="email"
+              className={'profile__input'}
+              value={email}
+              onChange={handleEmailChange}
+              readOnly={!isEditing}
+            />
+          </div>
         </div>
       </div>
-
 
       {isEditing ? (
         <div className={'profile__buttons-block'}>
