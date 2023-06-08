@@ -37,31 +37,22 @@ export default function App() {
   }, []);
 
   const location = useLocation();
-  const excludeHeaderPaths = ['/signin', '/signup', '/'];
-
-  const shouldRenderHeader = !excludeHeaderPaths.includes(location.pathname);
+  const headerPaths = ['/movies', '/saved-movies', '/profile'];
+  const shouldRenderHeader = headerPaths.includes(location.pathname);
 
   return (
     <div>
-      {shouldRenderHeader &&
+      {shouldRenderHeader && (
         <Header>
           <Navigation isMenuOpen={isMenuOpen} closeMenu={closeMenu} toggleMenu={toggleMenu} />
           {!isMenuOpen && <ProfileButton hidden={true} />}
-        </Header>}
+        </Header>
+      )}
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route
-          path="/movies"
-          element={<Movies />}
-        />
-        <Route
-          path="/saved-movies"
-          element={<SavedMovies />}
-        />
-        <Route
-          path="/profile"
-          element={<Profile />}
-        />
+        <Route path="/movies" element={<Movies />} />
+        <Route path="/saved-movies" element={<SavedMovies />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/signin" element={<Login />} />
         <Route path="/signup" element={<Register />} />
         <Route path="*" element={<NotFound />} />
