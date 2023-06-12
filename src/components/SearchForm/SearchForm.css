@@ -1,0 +1,131 @@
+.search-form {
+  padding: 70px 70px 48px;
+}
+
+.search-form__container {
+  border-bottom: 1px solid #E8E8E8;
+  padding-bottom: 13px;
+  margin-bottom: 33px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.search-form__filter {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.search-form__input {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 34px;
+  border: none;
+  color: #A0A0A0;
+}
+
+.search-form__input::placeholder {
+  color: #A0A0A0;
+}
+
+.search-form__button {
+  color: white;
+  border: none;
+  background-color: black;
+  border-radius: 48px;
+  padding: 8px 10.35px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.toggle-container {
+  display: inline-block;
+  position: relative;
+  width: 34px;
+  height: 14px;
+  background-color: #EBEBEB;
+  border-radius: 20px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.toggle-container input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toggle-switch {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 10px;
+  height: 10px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.toggle-container input[type="checkbox"]:checked + .toggle-switch {
+  transform: translateX(20px);
+}
+
+.checked {
+  background-color: #2BE080;
+}
+
+.toggle-container input[type="checkbox"]:not(:checked) + .toggle-switch {
+  background-color: #F5F5F5;
+}
+
+@media (max-width: 880px) {
+  .search-form {
+    padding: 80px 30px 61px;
+  }
+
+  .search-form__filter {
+    flex-direction: row-reverse;
+  }
+
+  .search-form__container {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .search-form {
+    padding: 90px 14px 51px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .search-form__container {
+    margin-bottom: 41px;
+    padding-bottom: 15px;
+  }
+
+  .search-form__filter {
+    align-self: center;
+    font-size: 11px;
+  }
+
+  .search-form__input {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+}

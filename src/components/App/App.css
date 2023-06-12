@@ -1,0 +1,13 @@
+.animation-transition {
+  transition: all .5s;
+}
+
+.hovered-button:hover {
+  cursor: pointer;
+  opacity: 80%;
+}
+
+.hovered-link:hover {
+  cursor: pointer;
+  opacity: 70%;
+}
