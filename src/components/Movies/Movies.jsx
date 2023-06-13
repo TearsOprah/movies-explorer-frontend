@@ -2,7 +2,6 @@ import './Movies.css'
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
-import MoviesLoader from "../MoviesLoader/MoviesLoader";
 import MoviesApi from '../../utils/MoviesApi';
 import { useEffect, useState } from 'react';
 import Preloader from "../Preloader/Preloader";
@@ -75,14 +74,12 @@ export default function Movies() {
           {searchedMovies.length > 0 ? (
             <>
               <MoviesCardList movies={searchedMovies} />
-              <MoviesLoader />
             </>
           ) : (
             <p className={'error-message'}>{error && !isSearching ? error : ''}</p>
           )}
         </>
       )}
-
 
       <Footer />
     </main>
