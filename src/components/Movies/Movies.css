@@ -4,3 +4,14 @@
   flex-direction: column;
   justify-content: space-between;
 }
+
+.error-message {
+  text-align: center;
+  align-self: center;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 34px;
+  border: none;
+  color: #A0A0A0
+}

@@ -78,7 +78,7 @@ export default function Movies() {
               <MoviesLoader />
             </>
           ) : (
-            <p>{error && !isSearching ? error : ''}</p>
+            <p className={'error-message'}>{error && !isSearching ? error : ''}</p>
           )}
         </>
       )}
