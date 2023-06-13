@@ -1,9 +1,8 @@
 import './MoviesCard.css'
-import cardImg from '../../images/cards/film_1.png'
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export default function MoviesCard() {
+export default function MoviesCard({ title, duration, trailerLink, image }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -22,16 +21,21 @@ export default function MoviesCard() {
   const location = useLocation();
   const isActive = location.pathname === '/saved-movies';
 
+  // преобразование формата длительности
+  const minutes = Math.floor(duration / 60); // Получение минут
+  const seconds = duration % 60; // Получение оставшихся секунд
+  const formattedDuration = `${minutes}ч ${seconds}м`;
+
   return (
     <li
       className={`card ${isActive && isHovered ? 'card_hovered' : ''}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <img className={'card__image'} src={cardImg} alt={'film screenshot'} />
+      <img className={'card__image'} src={' https://api.nomoreparties.co/' + image.url} alt={image.name} />
       <div className={'card__description'}>
         <div className={'card__info'}>
-          <p className={'card__name'}>Соберись перед прыжком</p>
+          <p className={'card__name'}>{title}</p>
           {isActive ? (
             <button className={'card__delete'}></button>
           ) : (
@@ -41,7 +45,7 @@ export default function MoviesCard() {
             ></button>
           )}
         </div>
-        <p className={'card__duration'}>1ч 10м</p>
+        <p className={'card__duration'}>{formattedDuration}</p>
       </div>
     </li>
   );
