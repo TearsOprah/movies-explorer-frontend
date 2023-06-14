@@ -1,23 +1,22 @@
 import './SearchForm.css'
-import { useState } from "react";
 
-export default function SearchForm({ onSearch }) {
-
-  const [shortFilmOnly, setShortFilmOnly] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const handleShortFilmToggle = () => {
-    setShortFilmOnly(!shortFilmOnly);
-  };
+export default function SearchForm({ onSearch,
+                                     checked,
+                                     onToggle,
+                                     searchQuery,
+                                     setSearchQuery }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // логика для обработки поиска
-    onSearch(searchQuery);
+    onSearch();
   };
 
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleToggleChange = () => {
+    onToggle();
   };
 
   return (
@@ -35,12 +34,16 @@ export default function SearchForm({ onSearch }) {
         </button>
       </div>
       <div className="search-form__filter">
-        <label className={`toggle-container ${shortFilmOnly ? 'checked' : ''}`}>
-          <input type="checkbox" checked={shortFilmOnly} onChange={handleShortFilmToggle} />
+        <label className={`toggle-container ${checked ? 'checked' : ''}`}>
+          <input type="checkbox" checked={checked} onChange={handleToggleChange} />
           <span className="toggle-switch"></span>
         </label>
         <span>Короткометражки</span>
       </div>
     </form>
-  )
+  );
 }
+
+
+
+

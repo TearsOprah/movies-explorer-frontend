@@ -32,7 +32,9 @@ export default function MoviesCard({ title, duration, trailerLink, image }) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <img className={'card__image'} src={' https://api.nomoreparties.co/' + image.url} alt={image.name} />
+      <a href={trailerLink} target={'_blank'}>
+        <img className={'card__image animation-transition hovered-link'} src={' https://api.nomoreparties.co/' + image.url} alt={image.name} />
+      </a>
       <div className={'card__description'}>
         <div className={'card__info'}>
           <p className={'card__name'}>{title}</p>

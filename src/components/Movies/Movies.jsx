@@ -11,6 +11,9 @@ export default function Movies() {
   const [searchedMovies, setSearchedMovies] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState('');
+  const [shortFilmOnly, setShortFilmOnly] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
 
   // получение всех фильмов
   useEffect(() => {
@@ -29,43 +32,58 @@ export default function Movies() {
       });
   };
 
-  // поиск по полученным фильмам
-  const handleSearch = (searchQuery) => {
-    if (allMovies.length === 0) {
-      return; // Если фильмы еще не загружены, не выполняем поиск
+// поиск по полученным фильмам
+  const handleSearch = (e) => {
+    if (e) {
+      e.preventDefault();
     }
-
     setIsSearching(true);
     setError('');
 
-    setTimeout(() => {
-      let filteredMovies = [];
+    if (searchQuery.trim() !== '') {
+      let filteredMovies = allMovies;
 
-      if (searchQuery.trim() !== '') {
-        filteredMovies = allMovies.filter((movie) => {
-          const nameEN = movie.nameEN ? movie.nameEN.toLowerCase() : '';
-          const nameRU = movie.nameRU ? movie.nameRU.toLowerCase() : '';
-          const query = searchQuery.toLowerCase();
+      const query = searchQuery.toLowerCase();
+      filteredMovies = allMovies.filter(
+        (movie) =>
+          (movie.nameEN && movie.nameEN.toLowerCase().includes(query)) ||
+          (movie.nameRU && movie.nameRU.toLowerCase().includes(query))
+      );
 
-          return nameEN.includes(query) || nameRU.includes(query);
-        });
+      if (shortFilmOnly) {
+        filteredMovies = filteredMovies.filter((movie) => movie.duration <= 40);
       }
 
       setSearchedMovies(filteredMovies);
 
-      // Задержка состояния isSearching на 1 секунду
       setTimeout(() => {
         setIsSearching(false);
-        if (filteredMovies.length === 0 && searchQuery.trim() !== '') {
+        if (filteredMovies.length === 0) {
           setError('Ничего не найдено');
         }
       }, 1000);
-    }, 0);
+    } else {
+      setSearchedMovies([]);
+      setIsSearching(false);
+    }
   };
+
+  const handleToggleShortFilmOnly = () => {
+    setShortFilmOnly(!shortFilmOnly);
+  };
+
+  useEffect(() => {
+    handleSearch();
+  }, [shortFilmOnly]);
 
   return (
     <main className={'movies'}>
-      <SearchForm onSearch={handleSearch} />
+      <SearchForm onSearch={handleSearch}
+                  onToggle={handleToggleShortFilmOnly}
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                  checked={shortFilmOnly}
+      />
 
       {isSearching ? (
         <Preloader />
