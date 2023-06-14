@@ -15,3 +15,7 @@
 .disabled-button {
   opacity: 70%;
 }
+
+.centred-block {
+  text-align: center;
+}

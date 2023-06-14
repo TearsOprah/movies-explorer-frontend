@@ -1,9 +1,27 @@
 import './Register.css'
-import React, { useState } from 'react';
+import React from 'react';
 import logoIcon from '../../images/logo.svg';
 import {Link} from "react-router-dom";
 
-export default function Register({ formValue, handleChange, handleRegister }) {
+export default function Register({ formValue, handleChange, handleRegister, errors, serverError }) {
+
+  const getFirstNonEmptyError = (errors) => {
+    for (const key in errors) {
+      if (errors.hasOwnProperty(key) && errors[key]) {
+        return errors[key];
+      }
+    }
+    return null;
+  };
+
+  const isFormValid = () => {
+    for (const key in errors) {
+      if (errors.hasOwnProperty(key) && (errors[key] || formValue[key].trim() === '')) {
+        return false;
+      }
+    }
+    return true;
+  };
 
   return (
     <form className={'auth'} onSubmit={handleRegister}>
@@ -18,7 +36,7 @@ export default function Register({ formValue, handleChange, handleRegister }) {
           <div className={'auth__input-block'}>
             <label className={'auth__input-name'} htmlFor="name">Имя</label>
             <input
-              className={'auth__input'}
+              className={`auth__input`}
               type="text"
               id="name"
               name="name"
@@ -31,7 +49,7 @@ export default function Register({ formValue, handleChange, handleRegister }) {
           <div className={'auth__input-block'}>
             <label className={'auth__input-name'} htmlFor="email">Email</label>
             <input
-              className={'auth__input active-input'}
+              className={`auth__input`}
               type="email"
               name="email"
               id="email"
@@ -44,7 +62,7 @@ export default function Register({ formValue, handleChange, handleRegister }) {
           <div className={'auth__input-block'}>
             <label className={'auth__input-name'} htmlFor="password">Пароль</label>
             <input
-              className={'auth__input'}
+              className={`auth__input`}
               type="password"
               name="password"
               id="password"
@@ -54,12 +72,13 @@ export default function Register({ formValue, handleChange, handleRegister }) {
               onChange={handleChange}
             />
           </div>
-          <p className={'auth__errors'}>Что-то пошло не так...</p>
+          <p className="auth__errors">{getFirstNonEmptyError(errors)}</p>
         </div>
       </div>
 
       <div className={'auth__buttons-block'}>
-        <button className={'auth__button animation-transition hovered-button'} type="submit">Зарегистрироваться</button>
+        <p className={'auth__errors centred-block'}>{serverError}</p>
+        <button className={`auth__button animation-transition hovered-button ${isFormValid() ? '' : 'disabled-button'}`} type="submit" disabled={!isFormValid()}>Зарегистрироваться</button>
         <div className={'auth__sign-block'}>
           <p className={'auth__sign-label'}>Уже зарегистрированы?</p>
           <Link className={'auth__sign-link animation-transition hovered-link'} to={'/signin'}>Войти</Link>

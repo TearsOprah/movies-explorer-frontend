@@ -1,5 +1,13 @@
 export const BASE_URL = 'https://api.movies.tearsoprah.nomoredomains.rocks';
 
+// метод для проверки ответа сервера
+const getResponseData = (res) => {
+  if (!res.ok) {
+    return Promise.reject(`${res.status}`);
+  }
+  return res.json();
+}
+
 export const register = ({ name, email, password }) => {
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
@@ -8,20 +16,10 @@ export const register = ({ name, email, password }) => {
     },
     body: JSON.stringify({ name, email, password }),
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Ошибка при регистрации');
-      }
-      return response.json();
+    .then((response) => getResponseData(response))
+    .then((res) => {
+      return res;
     })
-    .then((data) => {
-      // Обработка успешного ответа после регистрации
-      return data;
-    })
-    .catch((error) => {
-      // Обработка ошибки регистрации
-      throw error;
-    });
 };
 
 
