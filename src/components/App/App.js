@@ -11,10 +11,46 @@ import {useEffect, useState} from "react";
 import Navigation from "../Navigation/Navigation";
 import ProfileButton from "../ProfileButton/ProfileButton";
 import Header from "../Header/Header";
+import * as auth from "../../utils/auth";
+import { register } from '../../utils/auth';
+
 
 export default function App() {
 
-  // логика для бургер меню
+  // РЕГИСТРАЦИЯ
+  // состояние полей в форме регистрации
+  const [formValue, setFormValue] = useState({
+    name: '',
+    email: '',
+    password: '',
+  })
+
+  // изменение полей
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+
+    setFormValue({
+      ...formValue,
+      [name]: value
+    });
+  }
+
+  // отправка формы регистрации
+  const handleRegister = (e) => {
+    e.preventDefault();
+
+    register(formValue)
+      .then((data) => {
+        // Обработка успешного ответа после регистрации
+        console.log('Регистрация прошла успешно:', data);
+      })
+      .catch((error) => {
+        // Обработка ошибки регистрации
+        console.error('Ошибка при регистрации:', error);
+      });
+  };
+
+  // ЛОГИКА ДЛЯ БУРГЕР МЕНЮ
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -54,7 +90,15 @@ export default function App() {
         <Route path="/saved-movies" element={<SavedMovies />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/signin" element={<Login />} />
-        <Route path="/signup" element={<Register />} />
+
+        <Route path="/signup"
+               element={<Register
+                 formValue={formValue}
+                 handleChange={handleChange}
+                 handleRegister={handleRegister}
+               />}
+        />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

@@ -7,8 +7,7 @@ export default function SavedMovies() {
     <main className={'saved-movies'}>
       <SearchForm />
       <MoviesCardList />
-      <div className={'saved-movies__emp'}>
-      </div>
+      <div className={'saved-movies__emp'}></div>
       <Footer />
     </main>
   )

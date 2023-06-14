@@ -3,30 +3,10 @@ import React, { useState } from 'react';
 import logoIcon from '../../images/logo.svg';
 import {Link} from "react-router-dom";
 
-export default function Register() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleNameChange = (event) => {
-    setName(event.target.value);
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // логика обработки регистрации здесь
-  };
+export default function Register({ formValue, handleChange, handleRegister }) {
 
   return (
-    <form className={'auth'} onSubmit={handleSubmit}>
+    <form className={'auth'} onSubmit={handleRegister}>
       <div className={'auth__container'}>
         <div className={'auth__head'}>
           <a className={'animation-transition hovered-button'} href={'/'}>
@@ -41,9 +21,11 @@ export default function Register() {
               className={'auth__input'}
               type="text"
               id="name"
+              name="name"
               placeholder=""
-              value={name}
-              onChange={handleNameChange}
+              value={formValue.name}
+              required
+              onChange={handleChange}
             />
           </div>
           <div className={'auth__input-block'}>
@@ -51,10 +33,12 @@ export default function Register() {
             <input
               className={'auth__input active-input'}
               type="email"
+              name="email"
               id="email"
               placeholder=""
-              value={email}
-              onChange={handleEmailChange}
+              value={formValue.email}
+              onChange={handleChange}
+              required
             />
           </div>
           <div className={'auth__input-block'}>
@@ -62,10 +46,12 @@ export default function Register() {
             <input
               className={'auth__input'}
               type="password"
+              name="password"
               id="password"
               placeholder=""
-              value={password}
-              onChange={handlePasswordChange}
+              required
+              value={formValue.password}
+              onChange={handleChange}
             />
           </div>
           <p className={'auth__errors'}>Что-то пошло не так...</p>
