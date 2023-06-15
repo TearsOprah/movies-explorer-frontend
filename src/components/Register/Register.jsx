@@ -18,6 +18,9 @@ export default function Register() {
   // стейт для ошибок валидации
   const [errors, setErrors] = useState({});
 
+  // стейт для ошибки сервера
+  const [serverError, setServerError] = useState('');
+
   // изменение значений полей
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +38,7 @@ export default function Register() {
   };
 
   // отправка формы
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formErrors = validateRegisterForm(formValue);
@@ -46,10 +49,16 @@ export default function Register() {
       formValue.email.trim() !== '' &&
       formValue.password.trim() !== ''
     ) {
-      register(formValue)
-        .then((res) => {
-          navigate('/signin', { replace: true });
-        });
+      try {
+        await register(formValue);
+        navigate('/signin', { replace: true });
+      } catch (error) {
+        if (error === "409") {
+          setServerError("Пользователь с таким email уже существует");
+        } else {
+          setServerError("При регистрации пользователя произошла ошибка");
+        }
+      }
     } else {
       setErrors(formErrors);
     }
@@ -126,6 +135,7 @@ export default function Register() {
       </div>
 
       <div className="auth__buttons-block">
+        {serverError && <p className="auth__errors centred-block">{serverError}</p>}
         <button
           className={`auth__button animation-transition hovered-button ${
             !Object.values(errors).every((value) => value === '') ||

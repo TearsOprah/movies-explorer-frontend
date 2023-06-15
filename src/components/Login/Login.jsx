@@ -17,6 +17,9 @@ export default function Login({ handleLogin }) {
   // стейт ошибок валидации полей
   const [errors, setErrors] = useState({});
 
+  // стейт для ошибки сервера
+  const [serverError, setServerError] = useState('');
+
   // изменение значений полей
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -54,8 +57,11 @@ export default function Login({ handleLogin }) {
           }
         })
         .catch((err) => {
-          console.log(err);
-          setErrors({ email: "Что-то пошло не так...", password: "" });
+          if (err === '401') {
+            setServerError('Вы ввели неправильный логин или пароль.')
+          } else {
+            setServerError('При авторизации произошла ошибка. Токен не передан или передан не в том формате.')
+          }
         });
     } else {
       setErrors(formErrors);
@@ -117,6 +123,7 @@ export default function Login({ handleLogin }) {
       </div>
 
       <div className={'auth__buttons-block'}>
+        {serverError && (<p className={'auth__errors centred-block'}>{serverError}</p>)}
         <button
           className={`auth__button animation-transition hovered-button ${
             !Object.values(errors).every((value) => value === '') ||
