@@ -21,7 +21,8 @@ export default function App() {
   // АВТОРИЗАЦИЯ И ПРОВЕРКА ТОКЕНА
 
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Добавлено состояние загрузки
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     handleTokenCheck()
@@ -34,6 +35,11 @@ export default function App() {
         .then((res) => {
           if (res) {
             setLoggedIn(true);
+            setUser({
+              _id: res._id,
+              email: res.email,
+              name: res.name
+            });
           }
         })
         .finally(() => {
@@ -118,6 +124,7 @@ export default function App() {
               loggedIn={loggedIn}
               isLoading={isLoading}
               element={Profile}
+              user={user}
             />
           }
         />

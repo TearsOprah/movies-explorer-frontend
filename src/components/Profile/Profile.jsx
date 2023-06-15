@@ -1,8 +1,9 @@
 import './Profile.css'
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Preloader from "../Preloader/Preloader";
 
-export default function Profile() {
+export default function Profile({ user, isLoading }) {
 
   // ВЫХОД ИЗ АККАУНТА
   const navigate = useNavigate();
@@ -13,8 +14,8 @@ export default function Profile() {
     navigate('/signin', { replace: true });
   }
 
-  const [name, setName] = useState('test');
-  const [email, setEmail] = useState('test@example.com');
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
   const [isEditing, setIsEditing] = useState(false);
 
   const handleNameChange = (e) => {
@@ -34,11 +35,16 @@ export default function Profile() {
     // логика сохранения изменений
   };
 
+  if (isLoading) {
+    // Показываем компонент загрузки или прелоадер
+    return <Preloader />;
+  }
+
   return (
     <main className={'profile'}>
 
       <div className={'profile__container'}>
-        <h1 className={'profile__title'}>Привет, Михаил!</h1>
+        <h1 className={'profile__title'}>{`Привет, ${user.name}!`}</h1>
         <div className={'profile__inputs'}>
           <div className={'profile__inputs-block'}>
             <label htmlFor="name" className={'profile__label'}>
