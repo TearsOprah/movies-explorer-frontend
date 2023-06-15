@@ -3,15 +3,21 @@ import React, {useState} from "react";
 import logoIcon from "../../images/logo.svg";
 import {Link, useNavigate} from "react-router-dom";
 import {authorize} from "../../utils/auth";
+import {validateLoginForm} from "../../utils/validation";
 export default function Login({ handleLogin }) {
 
   const navigate = useNavigate();
 
+  // стейт для полей формы
   const [formValue, setFormValue] = useState({
     email: '',
     password: ''
   })
 
+  // стейт ошибок валидации полей
+  const [errors, setErrors] = useState({});
+
+  // изменение значений полей
   const handleChange = (e) => {
     const {name, value} = e.target;
 
@@ -19,22 +25,54 @@ export default function Login({ handleLogin }) {
       ...formValue,
       [name]: value
     });
+
+    const fieldErrors = validateField(name, value);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: fieldErrors
+    }));
   }
 
+  // отправка формы
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formValue.email || !formValue.password){
-      return;
+
+    const formErrors = validateLoginForm(formValue);
+
+    if (
+      Object.values(errors).every((value) => value === '') &&
+      formValue.email.trim() !== '' &&
+      formValue.password.trim() !== ''
+    ) {
+      authorize(formValue.email, formValue.password)
+        .then((data) => {
+          if (data.token) {
+            setFormValue({ email: "", password: "" });
+            setErrors({ email: "", password: "" });
+            handleLogin();
+            navigate("/movies", { replace: true });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setErrors({ email: "Что-то пошло не так...", password: "" });
+        });
+    } else {
+      setErrors(formErrors);
     }
-    authorize(formValue.email, formValue.password)
-      .then((data) => {
-        if (data.token){
-          setFormValue({email: '', password: ''});
-          handleLogin();
-          navigate('/movies', {replace: true});
-        }
-      })
-      .catch(err => console.log(err));
+  };
+
+  // валидация полей
+  const validateField = (name, value) => {
+    let fieldErrors = '';
+
+    if (name === 'email') {
+      fieldErrors = validateLoginForm({ ...formValue, [name]: value }).email || '';
+    } else if (name === 'password') {
+      fieldErrors = validateLoginForm({ ...formValue, [name]: value }).password || '';
+    }
+
+    return fieldErrors;
   }
 
   return (
@@ -60,6 +98,7 @@ export default function Login({ handleLogin }) {
               required
             />
           </div>
+          {errors.email && <p className="auth__errors">{errors.email}</p>}
           <div className={'auth__input-block'}>
             <label className={'auth__input-name'} htmlFor="password">Пароль</label>
             <input
@@ -73,12 +112,28 @@ export default function Login({ handleLogin }) {
               required
             />
           </div>
-          <p className={'auth__errors'}>Что-то пошло не так...</p>
+          {errors.password && <p className="auth__errors">{errors.password}</p>}
         </div>
       </div>
 
       <div className={'auth__buttons-block'}>
-        <button className={'auth__button animation-transition hovered-button'} type="submit">Войти</button>
+        <button
+          className={`auth__button animation-transition hovered-button ${
+            !Object.values(errors).every((value) => value === '') ||
+            !formValue.email ||
+            !formValue.password
+              ? 'disabled-button'
+              : ''
+          }`}
+          type="submit"
+          disabled={
+            !Object.values(errors).every((value) => value === '') ||
+            !formValue.email ||
+            !formValue.password
+          }
+        >
+          Войти
+        </button>
         <div className={'auth__sign-block'}>
           <p className={'auth__sign-label'}>Ещё не зарегистрированы?</p>
           <Link className={'auth__sign-link animation-transition hovered-link'} to={'/signup'}>Регистрация</Link>
