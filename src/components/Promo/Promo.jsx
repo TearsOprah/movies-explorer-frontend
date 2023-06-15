@@ -1,6 +1,4 @@
 import './Promo.css'
-import NavTab from "../NavTab/NavTab";
-import Header from "../Header/Header";
 import earthImg from '../../images/promo_earth.svg';
 import { useRef } from 'react';
 
@@ -14,9 +12,6 @@ export default function Promo() {
 
   return (
     <section className={'promo'}>
-      <Header>
-        <NavTab />
-      </Header>
       <div className={'promo__content'}>
         <div className={'promo__container'}>
           <h1 className={'promo__title'}>Учебный проект студента факультета Веб-разработки.</h1>

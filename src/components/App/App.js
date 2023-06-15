@@ -13,6 +13,7 @@ import ProfileButton from "../ProfileButton/ProfileButton";
 import Header from "../Header/Header";
 import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute";
 import { checkToken } from '../../utils/auth';
+import NavTab from "../NavTab/NavTab";
 
 
 export default function App() {
@@ -70,15 +71,21 @@ export default function App() {
   }, []);
 
   const location = useLocation();
-  const headerPaths = ['/movies', '/saved-movies', '/profile'];
+  const headerPaths = ['/movies', '/saved-movies', '/profile', '/'];
   const shouldRenderHeader = headerPaths.includes(location.pathname);
 
   return (
     <>
       {shouldRenderHeader && (
         <Header>
-          <Navigation isMenuOpen={isMenuOpen} closeMenu={closeMenu} toggleMenu={toggleMenu} />
-          {!isMenuOpen && <ProfileButton hidden={true} />}
+          {loggedIn ? (
+            <>
+              <Navigation isMenuOpen={isMenuOpen} closeMenu={closeMenu} toggleMenu={toggleMenu} />
+              {!isMenuOpen && <ProfileButton hidden={true} />}
+            </>
+          ) : (
+            <NavTab />
+          )}
         </Header>
       )}
       <Routes>
