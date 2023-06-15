@@ -1,5 +1,5 @@
 import './App.css';
-import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
+import {Route, Routes, useLocation} from "react-router-dom";
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
@@ -18,8 +18,9 @@ import { checkToken } from '../../utils/auth';
 export default function App() {
 
   // АВТОРИЗАЦИЯ И ПРОВЕРКА ТОКЕНА
-  const navigate = useNavigate();
+
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Добавлено состояние загрузки
 
   useEffect(() => {
     handleTokenCheck()
@@ -32,11 +33,15 @@ export default function App() {
         .then((res) => {
           if (res) {
             setLoggedIn(true);
-            navigate('/movies', {replace: true})
           }
         })
+        .finally(() => {
+          setIsLoading(false); // Проверка завершена, устанавливаем isLoading в false
+        });
+    } else {
+      setIsLoading(false); // Если токен отсутствует, сразу устанавливаем isLoading в false
     }
-  }
+  };
 
   const handleLogin = () => {
     setLoggedIn(true);
@@ -79,9 +84,36 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Main />} />
 
-        <Route path="/movies" element={<ProtectedRouteElement loggedIn={loggedIn} element={Movies} />} />
-        <Route path="/saved-movies" element={<ProtectedRouteElement loggedIn={loggedIn} element={SavedMovies} />} />
-        <Route path="/profile" element={<ProtectedRouteElement loggedIn={loggedIn} element={Profile} />} />
+        <Route
+          path="/movies"
+          element={
+            <ProtectedRouteElement
+              loggedIn={loggedIn}
+              isLoading={isLoading}
+              element={Movies}
+            />
+          }
+        />
+        <Route
+          path="/saved-movies"
+          element={
+            <ProtectedRouteElement
+              loggedIn={loggedIn}
+              isLoading={isLoading}
+              element={SavedMovies}
+            />
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRouteElement
+              loggedIn={loggedIn}
+              isLoading={isLoading}
+              element={Profile}
+            />
+          }
+        />
 
         <Route path="/signin"
                element={<Login handleLogin={handleLogin} />}

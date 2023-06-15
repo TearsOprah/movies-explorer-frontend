@@ -1,11 +1,15 @@
 import React from 'react';
-import { Navigate } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
+import Preloader from "../Preloader/Preloader";
 
-// этот компонент принимает другой компонент в качестве пропса
-// он также может взять неограниченное число пропсов и передать их новому компоненту
-const ProtectedRouteElement = ({ element: Component, ...props  }) => {
-  return (
-    props.loggedIn ? <Component {...props} /> : <Navigate to="/signin" replace/>
-  )};
+const ProtectedRouteElement = ({ element: Component, loggedIn, isLoading }) => {
+  if (isLoading) {
+    // Показываем компонент загрузки или прелоадер
+    return <Preloader />;
+  }
+
+  return loggedIn ? <Component /> : <Navigate to="/signin" replace />;
+};
 
 export default ProtectedRouteElement;
+
