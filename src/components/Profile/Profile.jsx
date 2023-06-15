@@ -1,6 +1,17 @@
 import './Profile.css'
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 export default function Profile() {
+
+  // ВЫХОД ИЗ АККАУНТА
+  const navigate = useNavigate();
+  function signOut(){
+    // Выполняем выход из аккаунта
+    localStorage.removeItem('jwt');
+    // Выполняем переход на страницу /signin
+    navigate('/signin', { replace: true });
+  }
 
   const [name, setName] = useState('test');
   const [email, setEmail] = useState('test@example.com');
@@ -21,10 +32,6 @@ export default function Profile() {
   const handleSaveClick = () => {
     setIsEditing(false);
     // логика сохранения изменений
-  };
-
-  const handleLogoutClick = () => {
-    // логика выхода из аккаунта
   };
 
   return (
@@ -75,7 +82,7 @@ export default function Profile() {
             Редактировать
           </button>
 
-          <button className={'profile__exit-button animation-transition hovered-button'} onClick={handleLogoutClick}>
+          <button className={'profile__exit-button animation-transition hovered-button'} onClick={signOut}>
             Выйти из аккаунта
           </button>
         </div>

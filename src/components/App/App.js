@@ -1,5 +1,5 @@
 import './App.css';
-import {Route, Routes, useLocation} from "react-router-dom";
+import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
@@ -11,123 +11,36 @@ import {useEffect, useState} from "react";
 import Navigation from "../Navigation/Navigation";
 import ProfileButton from "../ProfileButton/ProfileButton";
 import Header from "../Header/Header";
-import { register } from '../../utils/auth';
+import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute";
+import { checkToken } from '../../utils/auth';
 
 
 export default function App() {
 
-  // РЕГИСТРАЦИЯ
+  // АВТОРИЗАЦИЯ И ПРОВЕРКА ТОКЕНА
+  const navigate = useNavigate();
+  const [loggedIn, setLoggedIn] = useState(false);
 
-  // состояние полей в форме регистрации
-  const [formValue, setFormValue] = useState({
-    name: '',
-    email: '',
-    password: '',
-  })
+  useEffect(() => {
+    handleTokenCheck()
+  }, [])
 
-  // состояние ошибок
-  const [errors, setErrors] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
-
-
-  // изменение полей
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    if (name === 'name') {
-      if (!value) {
-        setErrors((prevState) => ({
-          ...prevState,
-          name: 'Поле Имя не может быть пустым.',
-        }));
-      } else if (!/^[a-zA-Zа-яА-ЯёЁ\s-]+$/.test(value)) {
-        setErrors((prevState) => ({
-          ...prevState,
-          name: 'Поле Имя может содержать только латиницу, кириллицу, пробел или дефис.',
-        }));
-      } else {
-        setErrors((prevState) => ({
-          ...prevState,
-          name: '',
-        }));
-      }
-    } else if (name === 'email') {
-      if (!value) {
-        setErrors((prevState) => ({
-          ...prevState,
-          email: 'Поле Email не может быть пустым.',
-        }));
-      } else {
-        const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-        if (!emailRegex.test(value)) {
-          setErrors((prevState) => ({
-            ...prevState,
-            email: 'Адрес электронной почты должен быть в правильном формате.',
-          }));
-        } else {
-          setErrors((prevState) => ({
-            ...prevState,
-            email: '',
-          }));
-        }
-      }
-    } else if (name === 'password') {
-    if (!value) {
-      setErrors((prevState) => ({
-        ...prevState,
-        password: 'Поле Пароль не может быть пустым.',
-      }));
-    } else if (value.length < 8) {
-      setErrors((prevState) => ({
-        ...prevState,
-        password: 'Пароль должен содержать не менее 8 символов.',
-      }));
-    } else if (!/(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/.test(value)) {
-      setErrors((prevState) => ({
-        ...prevState,
-        password: 'Пароль должен содержать буквы, цифры и хотя бы один специальный символ.',
-      }));
-    } else {
-      setErrors((prevState) => ({
-        ...prevState,
-        password: '',
-      }));
+  const handleTokenCheck = () => {
+    if (localStorage.getItem('jwt')) {
+      const jwt = localStorage.getItem('jwt');
+      checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            navigate('/movies', {replace: true})
+          }
+        })
     }
   }
 
-    setFormValue((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const [serverError, setServerError] = useState(null);
-
-  // отправка формы регистрации
-  const handleRegister = (e) => {
-    e.preventDefault();
-
-    register(formValue)
-      .then((data) => {
-        // Обработка успешного ответа после регистрации
-        console.log('Регистрация прошла успешно:', data);
-      })
-      .catch((error) => {
-        // Обработка ошибки регистрации
-
-        if (error) {
-          if (error === '409') {
-            setServerError('Пользователь с таким email уже существует')
-          } else {
-            setServerError('При регистрации пользователя произошла ошибка')
-          }
-        }
-
-      });
-  };
+  const handleLogin = () => {
+    setLoggedIn(true);
+  }
 
   // ЛОГИКА ДЛЯ БУРГЕР МЕНЮ
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -156,7 +69,7 @@ export default function App() {
   const shouldRenderHeader = headerPaths.includes(location.pathname);
 
   return (
-    <div>
+    <>
       {shouldRenderHeader && (
         <Header>
           <Navigation isMenuOpen={isMenuOpen} closeMenu={closeMenu} toggleMenu={toggleMenu} />
@@ -165,23 +78,21 @@ export default function App() {
       )}
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/movies" element={<Movies />} />
-        <Route path="/saved-movies" element={<SavedMovies />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/signin" element={<Login />} />
+
+        <Route path="/movies" element={<ProtectedRouteElement loggedIn={loggedIn} element={Movies} />} />
+        <Route path="/saved-movies" element={<ProtectedRouteElement loggedIn={loggedIn} element={SavedMovies} />} />
+        <Route path="/profile" element={<ProtectedRouteElement loggedIn={loggedIn} element={Profile} />} />
+
+        <Route path="/signin"
+               element={<Login handleLogin={handleLogin} />}
+        />
 
         <Route path="/signup"
-               element={<Register
-                 formValue={formValue}
-                 handleChange={handleChange}
-                 handleRegister={handleRegister}
-                 errors={errors}
-                 serverError={serverError}
-               />}
+               element={<Register />}
         />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </div>
+    </>
   );
 }

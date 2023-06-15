@@ -1,23 +1,41 @@
 import './Login.css'
 import React, {useState} from "react";
 import logoIcon from "../../images/logo.svg";
-import {Link} from "react-router-dom";
-export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+import {Link, useNavigate} from "react-router-dom";
+import {authorize} from "../../utils/auth";
+export default function Login({ handleLogin }) {
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
+  const navigate = useNavigate();
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
+  const [formValue, setFormValue] = useState({
+    email: '',
+    password: ''
+  })
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // логика обработки авторизации здесь
-  };
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+
+    setFormValue({
+      ...formValue,
+      [name]: value
+    });
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formValue.email || !formValue.password){
+      return;
+    }
+    authorize(formValue.email, formValue.password)
+      .then((data) => {
+        if (data.token){
+          setFormValue({email: '', password: ''});
+          handleLogin();
+          navigate('/movies', {replace: true});
+        }
+      })
+      .catch(err => console.log(err));
+  }
 
   return (
     <form className={'auth'} onSubmit={handleSubmit}>
@@ -33,22 +51,26 @@ export default function Login() {
             <label className={'auth__input-name'} htmlFor="email">Email</label>
             <input
               className={'auth__input active-input'}
-              type="email"
               id="email"
+              name="email"
+              type="email"
+              value={formValue.email}
+              onChange={handleChange}
               placeholder=""
-              value={email}
-              onChange={handleEmailChange}
+              required
             />
           </div>
           <div className={'auth__input-block'}>
             <label className={'auth__input-name'} htmlFor="password">Пароль</label>
             <input
               className={'auth__input'}
-              type="password"
               id="password"
+              name="password"
+              type="password"
+              value={formValue.password}
+              onChange={handleChange}
               placeholder=""
-              value={password}
-              onChange={handlePasswordChange}
+              required
             />
           </div>
           <p className={'auth__errors'}>Что-то пошло не так...</p>
