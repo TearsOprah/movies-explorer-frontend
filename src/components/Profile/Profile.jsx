@@ -2,12 +2,9 @@ import './Profile.css';
 import React, { useState, useContext } from 'react';
 import CurrentUserContext from "../CurrentUserContext/CurrentUserContext";
 import { useNavigate } from 'react-router-dom';
-import MainApi from "../../utils/MainApi";
 import { validateProfileForm } from "../../utils/validation";
 
-const mainApi = new MainApi('https://api.movies.tearsoprah.nomoredomains.rocks');
-
-export default function Profile({ handleLogout }) {
+export default function Profile({ handleLogout, mainApi }) {
   const currentUser = useContext(CurrentUserContext);
   const navigate = useNavigate();
   const [name, setName] = useState(currentUser.name);

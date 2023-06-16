@@ -15,7 +15,8 @@ import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute";
 import { checkToken } from '../../utils/auth';
 import NavTab from "../NavTab/NavTab";
 import CurrentUserContext from "../CurrentUserContext/CurrentUserContext";
-
+import MainApi from "../../utils/MainApi";
+const mainApi = new MainApi('https://api.movies.tearsoprah.nomoredomains.rocks');
 
 export default function App() {
 
@@ -93,7 +94,7 @@ export default function App() {
           {loggedIn ? (
             <>
               <Navigation isMenuOpen={isMenuOpen} closeMenu={closeMenu} toggleMenu={toggleMenu} />
-              {!isMenuOpen && <ProfileButton hidden={true} />}
+              {!isMenuOpen && <ProfileButton closeMenu={closeMenu} hidden={true} />}
             </>
           ) : (
             <NavTab />
@@ -131,6 +132,7 @@ export default function App() {
               isLoading={isLoading}
               element={Profile}
               handleLogout={handleLogout}
+              mainApi={mainApi}
             />
           }
         />
