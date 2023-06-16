@@ -1,9 +1,8 @@
 import './Profile.css'
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Preloader from "../Preloader/Preloader";
 
-export default function Profile({ user, isLoading }) {
+export default function Profile({ user }) {
 
   // ВЫХОД ИЗ АККАУНТА
   const navigate = useNavigate();
@@ -34,11 +33,6 @@ export default function Profile({ user, isLoading }) {
     setIsEditing(false);
     // логика сохранения изменений
   };
-
-  if (isLoading) {
-    // Показываем компонент загрузки или прелоадер
-    return <Preloader />;
-  }
 
   return (
     <main className={'profile'}>

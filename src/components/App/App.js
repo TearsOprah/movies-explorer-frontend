@@ -26,7 +26,7 @@ export default function App() {
 
   useEffect(() => {
     handleTokenCheck()
-  }, [])
+  }, [loggedIn])
 
   const handleTokenCheck = () => {
     if (localStorage.getItem('jwt')) {
