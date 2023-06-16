@@ -154,6 +154,8 @@ export default function App() {
               element={Movies}
               allMovies={allMovies}
               errorFetchAllMovies={errorFetchAllMovies}
+              savedMovies={savedMovies}
+              mainApi={mainApi}
             />
           }
         />

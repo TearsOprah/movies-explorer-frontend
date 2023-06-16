@@ -2,9 +2,8 @@ import './MoviesCard.css'
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export default function MoviesCard({ title, duration, trailerLink, image }) {
+export default function MoviesCard({ movieData, isLiked, mainApi, savedMovieId }) {
 
-  const [isLiked, setIsLiked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -15,16 +14,42 @@ export default function MoviesCard({ title, duration, trailerLink, image }) {
     setIsHovered(false);
   };
 
-  const handleLikeClick = () => {
-    setIsLiked(!isLiked);
+  const handleLikeClick = async () => {
+    try {
+      if (isLiked) {
+        // Если фильм уже лайкнут, удаляем его
+        await mainApi.deleteMovie(savedMovieId);
+        console.log('дизлайк')
+        // Дополнительная логика после удаления фильма
+      } else {
+        // Если фильм не лайкнут, создаем его
+        console.log('лайк')
+        const movie = {
+          country: movieData.country,
+          director: movieData.director,
+          duration: movieData.duration,
+          year: movieData.year,
+          description: movieData.description,
+          image: 'https://api.nomoreparties.co/' + movieData.image.url,
+          trailerLink: movieData.trailerLink,
+          thumbnail: 'https://api.nomoreparties.co/' + movieData.image.previewUrl,
+          movieId: movieData.id,
+          nameRU: movieData.nameRU,
+          nameEN: movieData.nameEN,
+        };
+        await mainApi.createMovie(movie);
+      }
+    } catch (error) {
+      console.error('Ошибка при обработке лайка:', error);
+    }
   };
 
   const location = useLocation();
   const isActive = location.pathname === '/saved-movies';
 
   // преобразование формата длительности
-  const minutes = Math.floor(duration / 60); // Получение минут
-  const seconds = duration % 60; // Получение оставшихся секунд
+  const minutes = Math.floor(movieData.duration / 60); // Получение минут
+  const seconds = movieData.duration % 60; // Получение оставшихся секунд
   const formattedDuration = `${minutes}ч ${seconds}м`;
 
   return (
@@ -33,14 +58,14 @@ export default function MoviesCard({ title, duration, trailerLink, image }) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <a href={trailerLink} target={'_blank'}>
+      <a href={movieData.trailerLink} target={'_blank'}>
         <img className={'card__image animation-transition hovered-link'}
-             src={image.url ? 'https://api.nomoreparties.co/' + image.url : image}
-             alt={title} />
+             src={movieData.image.url ? 'https://api.nomoreparties.co/' + movieData.image.url : movieData.image}
+             alt={movieData.nameRU} />
       </a>
       <div className={'card__description'}>
         <div className={'card__info'}>
-          <p className={'card__name'}>{title}</p>
+          <p className={'card__name'}>{movieData.nameRU}</p>
           {isActive ? (
             <button className={'card__delete'}></button>
           ) : (

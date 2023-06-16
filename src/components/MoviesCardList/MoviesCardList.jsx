@@ -3,7 +3,12 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 import MoviesLoader from "../MoviesLoader/MoviesLoader";
 import { useEffect, useState } from 'react';
 
-export default function MoviesCardList({ movies }) {
+export default function MoviesCardList({ movies, ...props }) {
+
+  if (props.savedMovies) {
+    console.log('savedMovies')
+    console.log(props.savedMovies)
+  }
 
   const [visibleCards, setVisibleCards] = useState(getInitialVisibleCards());
 
@@ -42,19 +47,35 @@ export default function MoviesCardList({ movies }) {
 
   const visibleMovies = movies.slice(0, visibleCards);
 
-  console.log(visibleMovies)
-
   return (
     <section className={'movies-cards'}>
       <ul className={'movies-cards__container'}>
-        {visibleMovies.map((card) => (
-          <MoviesCard key={card.id || card._id}
-                      title={card.nameRU}
-                      duration={card.duration}
-                      trailerLink={card.trailerLink}
-                      image={card.image}
-          />
-        ))}
+        {visibleMovies.map((card) => {
+          const isLiked =
+            props.savedMovies &&
+            props.savedMovies.length > 0 &&
+            props.savedMovies.some(
+              (savedCard) => savedCard.id === card.id || savedCard.movieId === card.id
+            );
+
+          const savedMovie =
+            props.savedMovies &&
+            props.savedMovies.find(
+              (savedCard) => savedCard.id === card.id || savedCard.movieId === card.id
+            );
+
+          const savedMovieId = savedMovie ? savedMovie._id : null;
+
+          console.log(isLiked)
+          return (
+            <MoviesCard key={card.id || card._id}
+                        movieData={card}
+                        isLiked={isLiked}
+                        mainApi={props.mainApi}
+                        savedMovieId={savedMovieId}
+            />
+          )
+        })}
       </ul>
       {movies.length > visibleCards && <MoviesLoader onClick={handleShowMore} />}
     </section>

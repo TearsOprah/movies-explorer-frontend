@@ -5,7 +5,7 @@ import Footer from '../Footer/Footer';
 import useMoviesSearch from '../../utils/useMoviesSearch';
 import Preloader from '../Preloader/Preloader';
 
-export default function Movies({ allMovies, errorFetchAllMovies }) {
+export default function Movies({ allMovies, errorFetchAllMovies, savedMovies, mainApi }) {
   const {
     searchedMovies,
     isSearching,
@@ -33,7 +33,7 @@ export default function Movies({ allMovies, errorFetchAllMovies }) {
         <>
           {searchedMovies.length > 0 ? (
             <>
-              <MoviesCardList movies={searchedMovies} />
+              <MoviesCardList movies={searchedMovies} savedMovies={savedMovies} mainApi={mainApi} />
             </>
           ) : (
             <p className={'error-message'}>
