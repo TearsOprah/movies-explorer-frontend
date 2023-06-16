@@ -2,10 +2,10 @@ import './Register.css';
 import React, { useState, useEffect } from 'react';
 import logoIcon from '../../images/logo.svg';
 import { Link, useNavigate } from 'react-router-dom';
-import { register } from "../../utils/auth";
+import { register, authorize } from "../../utils/auth";
 import { validateRegisterForm } from "../../utils/validation";
 
-export default function Register({ loggedIn }) {
+export default function Register({ loggedIn, handleLogin }) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -58,7 +58,22 @@ export default function Register({ loggedIn }) {
     ) {
       try {
         await register(formValue);
-        navigate('/signin', { replace: true });
+        authorize(formValue.email, formValue.password)
+          .then((data) => {
+            if (data.token) {
+              setFormValue({
+                name: '',
+                email: '',
+                password: ''
+              });
+              setErrors({});
+              handleLogin();
+              navigate('/movies');
+            }
+          })
+          .catch((err) => {
+            setServerError('При авторизации произошла ошибка');
+          });
       } catch (error) {
         if (error === "409") {
           setServerError("Пользователь с таким email уже существует");
@@ -69,7 +84,7 @@ export default function Register({ loggedIn }) {
     } else {
       setErrors(formErrors);
     }
-  }
+  };
 
   // валидация полей
   const validateField = (name, value) => {

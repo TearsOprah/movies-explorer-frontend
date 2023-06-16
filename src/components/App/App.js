@@ -221,7 +221,7 @@ export default function App() {
         />
 
         <Route path="/signup"
-               element={<Register loggedIn={loggedIn} />}
+               element={<Register handleLogin={handleLogin} loggedIn={loggedIn} />}
         />
 
         <Route path="*" element={<NotFound />} />
