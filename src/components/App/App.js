@@ -102,17 +102,13 @@ export default function App() {
   }, []);
 
   // ЛАЙКИ
-
   const handleLikeClick = async (isLiked, savedMovieId, movieData) => {
     try {
       if (isLiked) {
         // Если фильм уже лайкнут, удаляем его
         await mainApi.deleteMovie(savedMovieId);
-        console.log('дизлайк')
-        // Дополнительная логика после удаления фильма
       } else {
         // Если фильм не лайкнут, создаем его
-        console.log('лайк')
         const movie = {
           country: movieData.country,
           director: movieData.director,
@@ -130,7 +126,6 @@ export default function App() {
       }
 
       // После успешного выполнения операции вызываем повторную загрузку сохраненных фильмов
-      console.log('обновляем состояние')
       fetchSavedMovies();
 
     } catch (error) {

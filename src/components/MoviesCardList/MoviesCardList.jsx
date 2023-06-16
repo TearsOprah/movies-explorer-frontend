@@ -5,9 +5,6 @@ import { useEffect, useState } from 'react';
 
 export default function MoviesCardList({ movies, ...props }) {
 
-  console.log('MoviesCardList movies')
-  console.log(movies)
-
   const [visibleCards, setVisibleCards] = useState(getInitialVisibleCards());
 
   // утсановка кол-ва изначально показываемых карточек
