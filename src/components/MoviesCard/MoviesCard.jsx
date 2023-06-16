@@ -38,7 +38,7 @@ export default function MoviesCard({ movieData, isLiked, savedMovieId, handleLik
           <p className={'card__name'}>{movieData.nameRU}</p>
           {isActive ? (
             <button
-              className={'card__delete'}
+              className={'card__delete hovered-button'}
               onClick={() => handleLikeClick(true, movieData._id, movieData)}>
             </button>
           ) : (
