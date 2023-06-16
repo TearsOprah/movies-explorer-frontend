@@ -1,12 +1,19 @@
 import './Login.css'
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import logoIcon from "../../images/logo.svg";
 import {Link, useNavigate} from "react-router-dom";
 import {authorize} from "../../utils/auth";
 import {validateLoginForm} from "../../utils/validation";
-export default function Login({ handleLogin }) {
+export default function Login({ handleLogin, loggedIn }) {
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Если пользователь уже авторизован, перенаправляем на главную страницу
+    if (loggedIn) {
+      navigate('/');
+    }
+  }, [loggedIn, navigate]);
 
   // стейт для полей формы
   const [formValue, setFormValue] = useState({
