@@ -14,6 +14,7 @@ export default function Profile({ handleLogout }) {
   const [email, setEmail] = useState(currentUser.email);
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState('')
 
   // изменение и валидация полей
   const handleNameChange = (e) => {
@@ -31,6 +32,7 @@ export default function Profile({ handleLogout }) {
   };
 
   const handleEditClick = () => {
+    setServerError('')
     setIsEditing(true);
   };
 
@@ -50,7 +52,8 @@ export default function Profile({ handleLogout }) {
       // Логика после успешного обновления данных
     } catch (error) {
       // Обработка ошибки при обновлении данных
-      console.error('Error updating profile:', error);
+      setServerError('При обновлении профиля произошла ошибка.')
+      console.error('При обновлении профиля произошла ошибка:', error);
     }
   };
 
@@ -99,6 +102,7 @@ export default function Profile({ handleLogout }) {
 
       {isEditing ? (
         <div className="profile__buttons-block">
+          {serverError && <span className="auth__errors centred-block">{serverError}</span>}
           <button
             className={`profile__save-button ${Object.keys(errors).length > 0 ? 'disabled-button' : ''}`}
             onClick={handleSaveClick}
