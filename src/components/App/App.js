@@ -16,6 +16,7 @@ import { checkToken } from '../../utils/auth';
 import NavTab from "../NavTab/NavTab";
 import CurrentUserContext from "../CurrentUserContext/CurrentUserContext";
 import MainApi from "../../utils/MainApi";
+import MoviesApi from "../../utils/MoviesApi";
 const mainApi = new MainApi('https://api.movies.tearsoprah.nomoredomains.rocks');
 
 export default function App() {
@@ -60,6 +61,47 @@ export default function App() {
     setLoggedIn(false);
     setUser(null);
   };
+
+  // ПОЛУЧАЕМ ВСЕ ФИЛЬМЫ
+  useEffect(() => {
+    fetchAllMovies();
+  }, []);
+
+  const [allMovies, setAllMovies] = useState([]);
+  const [errorFetchAllMovies, setErrorFetchAllMovies] = useState('');
+  const fetchAllMovies = () => {
+    setErrorFetchAllMovies('');
+
+    MoviesApi.getMovies()
+      .then((data) => {
+        setAllMovies(data);
+      })
+      .catch(() => {
+        setErrorFetchAllMovies('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.');
+      });
+  };
+
+  // ПОЛУЧАЕМ СОХРАНЕННЫЕ ФИЛЬМЫ
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [errorFetchSavedMovies, setErrorFetchSavedMovies] = useState('');
+
+  const fetchSavedMovies = () => {
+    setErrorFetchSavedMovies('');
+
+    mainApi.getMovies()
+      .then((data) => {
+        setSavedMovies(data);
+      })
+      .catch(() => {
+        setErrorFetchSavedMovies('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.');
+      });
+  };
+
+  useEffect(() => {
+    fetchSavedMovies();
+  }, []);
+
+  console.log(savedMovies);
 
   // ЛОГИКА ДЛЯ БУРГЕР МЕНЮ
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -111,6 +153,8 @@ export default function App() {
               loggedIn={loggedIn}
               isLoading={isLoading}
               element={Movies}
+              allMovies={allMovies}
+              errorFetchAllMovies={errorFetchAllMovies}
             />
           }
         />
