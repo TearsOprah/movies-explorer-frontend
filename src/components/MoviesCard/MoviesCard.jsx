@@ -2,7 +2,7 @@ import './MoviesCard.css'
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export default function MoviesCard({ movieData, isLiked, mainApi, savedMovieId }) {
+export default function MoviesCard({ movieData, isLiked, savedMovieId, handleLikeClick }) {
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -12,36 +12,6 @@ export default function MoviesCard({ movieData, isLiked, mainApi, savedMovieId }
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-  };
-
-  const handleLikeClick = async () => {
-    try {
-      if (isLiked) {
-        // Если фильм уже лайкнут, удаляем его
-        await mainApi.deleteMovie(savedMovieId);
-        console.log('дизлайк')
-        // Дополнительная логика после удаления фильма
-      } else {
-        // Если фильм не лайкнут, создаем его
-        console.log('лайк')
-        const movie = {
-          country: movieData.country,
-          director: movieData.director,
-          duration: movieData.duration,
-          year: movieData.year,
-          description: movieData.description,
-          image: 'https://api.nomoreparties.co/' + movieData.image.url,
-          trailerLink: movieData.trailerLink,
-          thumbnail: 'https://api.nomoreparties.co/' + movieData.image.previewUrl,
-          movieId: movieData.id,
-          nameRU: movieData.nameRU,
-          nameEN: movieData.nameEN,
-        };
-        await mainApi.createMovie(movie);
-      }
-    } catch (error) {
-      console.error('Ошибка при обработке лайка:', error);
-    }
   };
 
   const location = useLocation();
@@ -67,12 +37,15 @@ export default function MoviesCard({ movieData, isLiked, mainApi, savedMovieId }
         <div className={'card__info'}>
           <p className={'card__name'}>{movieData.nameRU}</p>
           {isActive ? (
-            <button className={'card__delete'}></button>
+            <button
+              className={'card__delete'}
+              onClick={() => handleLikeClick(true, movieData._id, movieData)}>
+            </button>
           ) : (
             <button
               className={`card__like ${isLiked ? 'card__like_active' : ''} animation-transition hovered-button`}
-              onClick={handleLikeClick}
-            ></button>
+              onClick={() => handleLikeClick(isLiked, savedMovieId, movieData)}>
+            </button>
           )}
         </div>
         <p className={'card__duration'}>{formattedDuration}</p>

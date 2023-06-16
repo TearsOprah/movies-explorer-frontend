@@ -5,10 +5,8 @@ import { useEffect, useState } from 'react';
 
 export default function MoviesCardList({ movies, ...props }) {
 
-  if (props.savedMovies) {
-    console.log('savedMovies')
-    console.log(props.savedMovies)
-  }
+  console.log('MoviesCardList movies')
+  console.log(movies)
 
   const [visibleCards, setVisibleCards] = useState(getInitialVisibleCards());
 
@@ -66,13 +64,12 @@ export default function MoviesCardList({ movies, ...props }) {
 
           const savedMovieId = savedMovie ? savedMovie._id : null;
 
-          console.log(isLiked)
           return (
             <MoviesCard key={card.id || card._id}
                         movieData={card}
                         isLiked={isLiked}
-                        mainApi={props.mainApi}
                         savedMovieId={savedMovieId}
+                        handleLikeClick={props.handleLikeClick}
             />
           )
         })}

@@ -101,6 +101,42 @@ export default function App() {
     fetchSavedMovies();
   }, []);
 
+  // ЛАЙКИ
+
+  const handleLikeClick = async (isLiked, savedMovieId, movieData) => {
+    try {
+      if (isLiked) {
+        // Если фильм уже лайкнут, удаляем его
+        await mainApi.deleteMovie(savedMovieId);
+        console.log('дизлайк')
+        // Дополнительная логика после удаления фильма
+      } else {
+        // Если фильм не лайкнут, создаем его
+        console.log('лайк')
+        const movie = {
+          country: movieData.country,
+          director: movieData.director,
+          duration: movieData.duration,
+          year: movieData.year,
+          description: movieData.description,
+          image: 'https://api.nomoreparties.co/' + movieData.image.url,
+          trailerLink: movieData.trailerLink,
+          thumbnail: 'https://api.nomoreparties.co/' + movieData.image.previewUrl,
+          movieId: movieData.id,
+          nameRU: movieData.nameRU,
+          nameEN: movieData.nameEN,
+        };
+        await mainApi.createMovie(movie);
+      }
+
+      // После успешного выполнения операции вызываем повторную загрузку сохраненных фильмов
+      console.log('обновляем состояние')
+      fetchSavedMovies();
+
+    } catch (error) {
+      console.error('Ошибка при обработке лайка:', error);
+    }
+  };
 
   // ЛОГИКА ДЛЯ БУРГЕР МЕНЮ
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -155,7 +191,7 @@ export default function App() {
               allMovies={allMovies}
               errorFetchAllMovies={errorFetchAllMovies}
               savedMovies={savedMovies}
-              mainApi={mainApi}
+              handleLikeClick={handleLikeClick}
             />
           }
         />
@@ -168,6 +204,7 @@ export default function App() {
               element={SavedMovies}
               savedMovies={savedMovies}
               errorFetchSavedMovies={errorFetchSavedMovies}
+              handleLikeClick={handleLikeClick}
             />
           }
         />
