@@ -37,7 +37,14 @@ const useMoviesSearch = (movies) => {
         }
       }, 1000);
     } else {
-      setSearchedMovies([]);
+      // Если строка поиска пустая и включены короткометражки,
+      // отфильтровать все сохраненные фильмы по короткометражкам
+      if (shortFilmOnly) {
+        const shortMovies = movies.filter((movie) => movie.duration <= 40);
+        setSearchedMovies(shortMovies);
+      } else {
+        setSearchedMovies(movies);
+      }
       setIsSearching(false);
     }
   };
