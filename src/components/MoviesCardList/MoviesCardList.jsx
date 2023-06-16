@@ -42,11 +42,13 @@ export default function MoviesCardList({ movies }) {
 
   const visibleMovies = movies.slice(0, visibleCards);
 
+  console.log(visibleMovies)
+
   return (
     <section className={'movies-cards'}>
       <ul className={'movies-cards__container'}>
         {visibleMovies.map((card) => (
-          <MoviesCard key={card.id}
+          <MoviesCard key={card.id || card._id}
                       title={card.nameRU}
                       duration={card.duration}
                       trailerLink={card.trailerLink}

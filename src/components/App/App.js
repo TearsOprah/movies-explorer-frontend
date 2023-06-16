@@ -101,7 +101,6 @@ export default function App() {
     fetchSavedMovies();
   }, []);
 
-  console.log(savedMovies);
 
   // ЛОГИКА ДЛЯ БУРГЕР МЕНЮ
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -165,6 +164,8 @@ export default function App() {
               loggedIn={loggedIn}
               isLoading={isLoading}
               element={SavedMovies}
+              savedMovies={savedMovies}
+              errorFetchSavedMovies={errorFetchSavedMovies}
             />
           }
         />

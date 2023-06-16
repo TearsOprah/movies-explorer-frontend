@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 export default function MoviesCard({ title, duration, trailerLink, image }) {
+
   const [isLiked, setIsLiked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -33,7 +34,9 @@ export default function MoviesCard({ title, duration, trailerLink, image }) {
       onMouseLeave={handleMouseLeave}
     >
       <a href={trailerLink} target={'_blank'}>
-        <img className={'card__image animation-transition hovered-link'} src={' https://api.nomoreparties.co/' + image.url} alt={image.name} />
+        <img className={'card__image animation-transition hovered-link'}
+             src={image.url ? 'https://api.nomoreparties.co/' + image.url : image}
+             alt={title} />
       </a>
       <div className={'card__description'}>
         <div className={'card__info'}>
