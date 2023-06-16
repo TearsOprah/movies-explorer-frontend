@@ -40,6 +40,28 @@ export function validateLoginForm(formValue) {
   return errors;
 }
 
+export function validateProfileForm(formValue, fieldToValidate) {
+  const errors = {};
+
+  if (fieldToValidate === 'name') {
+    if (!formValue.name) {
+      errors.name = 'Введите имя';
+    } else if (!isNameValid(formValue.name)) {
+      errors.name = 'Имя может содержать только символы латиницы, кириллицы, пробел или дефис';
+    }
+  }
+
+  if (fieldToValidate === 'email') {
+    if (!formValue.email) {
+      errors.email = 'Введите email';
+    } else if (!isEmailValid(formValue.email)) {
+      errors.email = 'Введите корректный email';
+    }
+  }
+
+  return errors;
+}
+
 export function isNameValid(name) {
   // Валидация имени (латиница, кириллица, пробелы и дефис)
   const nameRegex = /^[A-Za-zА-Яа-яЁё\s-]+$/;

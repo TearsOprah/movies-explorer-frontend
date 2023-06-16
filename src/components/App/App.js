@@ -55,6 +55,11 @@ export default function App() {
     setLoggedIn(true);
   }
 
+  const handleLogout = () => {
+    setLoggedIn(false);
+    setUser(null);
+  };
+
   // ЛОГИКА ДЛЯ БУРГЕР МЕНЮ
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {
@@ -125,6 +130,7 @@ export default function App() {
               loggedIn={loggedIn}
               isLoading={isLoading}
               element={Profile}
+              handleLogout={handleLogout}
             />
           }
         />

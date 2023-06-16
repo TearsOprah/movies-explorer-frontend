@@ -1,46 +1,49 @@
-import './Profile.css'
+import './Profile.css';
 import React, { useState, useContext } from 'react';
 import CurrentUserContext from "../CurrentUserContext/CurrentUserContext";
 import { useNavigate } from 'react-router-dom';
 import MainApi from "../../utils/MainApi";
+import { validateProfileForm } from "../../utils/validation";
 
 const mainApi = new MainApi('https://api.movies.tearsoprah.nomoredomains.rocks');
 
-export default function Profile() {
-
+export default function Profile({ handleLogout }) {
   const currentUser = useContext(CurrentUserContext);
   const navigate = useNavigate();
   const [name, setName] = useState(currentUser.name);
   const [email, setEmail] = useState(currentUser.email);
   const [isEditing, setIsEditing] = useState(false);
+  const [errors, setErrors] = useState({});
 
-  // ВЫХОД ИЗ АККАУНТА
-  function signOut() {
-    // Выполняем выход из аккаунта
-    localStorage.removeItem('jwt');
-    // Выполняем переход на страницу /signin
-    navigate('/signin', { replace: true });
-  }
-
-
-
-
-  //
-
-
+  // изменение и валидация полей
   const handleNameChange = (e) => {
     setName(e.target.value);
+    const formErrors = validateProfileForm({ name: e.target.value }, 'name');
+    setErrors(formErrors);
   };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
+    if (isEditing) {
+      const formErrors = validateProfileForm({ email: e.target.value }, 'email');
+      setErrors(formErrors);
+    }
   };
 
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
+  // сохранение изменений
   const handleSaveClick = async () => {
+    // Валидация введенных данных перед сохранением
+    const formErrors = validateProfileForm({ name, email });
+
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
+
     try {
       await mainApi.updateProfile(name, email);
       setIsEditing(false);
@@ -49,6 +52,13 @@ export default function Profile() {
       // Обработка ошибки при обновлении данных
       console.error('Error updating profile:', error);
     }
+  };
+
+  // выход из аккаунта
+  const signOut = () => {
+    localStorage.removeItem('jwt');
+    handleLogout();
+    navigate('/', { replace: true });
   };
 
   return (
@@ -69,6 +79,7 @@ export default function Profile() {
               readOnly={!isEditing}
             />
           </div>
+          {errors.name && <span className="auth__errors">{errors.name}</span>}
           <div className="profile__inputs-block">
             <label htmlFor="email" className="profile__label">
               Email:
@@ -82,12 +93,17 @@ export default function Profile() {
               readOnly={!isEditing}
             />
           </div>
+          {errors.email && <span className="auth__errors">{errors.email}</span>}
         </div>
       </div>
 
       {isEditing ? (
         <div className="profile__buttons-block">
-          <button className="profile__save-button" onClick={handleSaveClick}>
+          <button
+            className={`profile__save-button ${Object.keys(errors).length > 0 ? 'disabled-button' : ''}`}
+            onClick={handleSaveClick}
+            disabled={Object.keys(errors).length > 0}
+          >
             Сохранить
           </button>
         </div>
