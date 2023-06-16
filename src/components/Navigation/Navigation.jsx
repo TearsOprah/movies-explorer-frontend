@@ -12,9 +12,9 @@ export default function Navigation({ isMenuOpen, closeMenu, toggleMenu }) {
       <div className={`navigation__container ${isMenuOpen ? 'navigation__container_active' : ''}`}>
         {isMenuOpen && <button className="close-button animation-transition hovered-button" onClick={closeMenu}></button>}
         <ul className={'navigation__list'}>
-          <li className={`navigation__item navigation__item_hidden animation-transition hovered-link ${activePage === '/' ? 'navigation__item_active' : ''}`}><Link to={'/'}>Главная</Link></li>
-          <li className={`navigation__item animation-transition hovered-link ${activePage === '/movies' ? 'navigation__item_active' : ''}`}><Link to={'/movies'}>Фильмы</Link></li>
-          <li className={`navigation__item animation-transition hovered-link ${activePage === '/saved-movies' ? 'navigation__item_active' : ''}`}><Link to={'/saved-movies'}>Сохраненные фильмы</Link></li>
+          <li className={`navigation__item navigation__item_hidden animation-transition hovered-link ${activePage === '/' ? 'navigation__item_active' : ''}`}><Link onClick={closeMenu} to={'/'}>Главная</Link></li>
+          <li className={`navigation__item animation-transition hovered-link ${activePage === '/movies' ? 'navigation__item_active' : ''}`}><Link onClick={closeMenu} to={'/movies'}>Фильмы</Link></li>
+          <li className={`navigation__item animation-transition hovered-link ${activePage === '/saved-movies' ? 'navigation__item_active' : ''}`}><Link onClick={closeMenu} to={'/saved-movies'}>Сохраненные фильмы</Link></li>
         </ul>
         {isMenuOpen && <ProfileButton />}
       </div>
