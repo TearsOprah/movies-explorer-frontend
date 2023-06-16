@@ -14,6 +14,7 @@ import Header from "../Header/Header";
 import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute";
 import { checkToken } from '../../utils/auth';
 import NavTab from "../NavTab/NavTab";
+import CurrentUserContext from "../CurrentUserContext/CurrentUserContext";
 
 
 export default function App() {
@@ -81,7 +82,7 @@ export default function App() {
   const shouldRenderHeader = headerPaths.includes(location.pathname);
 
   return (
-    <>
+    <CurrentUserContext.Provider value={user}>
       {shouldRenderHeader && (
         <Header>
           {loggedIn ? (
@@ -124,7 +125,6 @@ export default function App() {
               loggedIn={loggedIn}
               isLoading={isLoading}
               element={Profile}
-              user={user}
             />
           }
         />
@@ -139,6 +139,6 @@ export default function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </>
+    </CurrentUserContext.Provider>
   );
 }

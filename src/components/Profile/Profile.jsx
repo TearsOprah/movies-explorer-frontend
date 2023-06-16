@@ -1,20 +1,25 @@
 import './Profile.css'
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import CurrentUserContext from "../CurrentUserContext/CurrentUserContext";
 import { useNavigate } from 'react-router-dom';
 
-export default function Profile({ user }) {
+export default function Profile() {
+
+  const currentUser = useContext(CurrentUserContext);
+
 
   // ВЫХОД ИЗ АККАУНТА
   const navigate = useNavigate();
-  function signOut(){
+  function signOut() {
     // Выполняем выход из аккаунта
     localStorage.removeItem('jwt');
     // Выполняем переход на страницу /signin
     navigate('/signin', { replace: true });
   }
 
-  const [name, setName] = useState(user.name);
-  const [email, setEmail] = useState(user.email);
+  const [name, setName] = useState(currentUser.name);
+  const [email, setEmail] = useState(currentUser.email);
+
   const [isEditing, setIsEditing] = useState(false);
 
   const handleNameChange = (e) => {
@@ -38,7 +43,7 @@ export default function Profile({ user }) {
     <main className={'profile'}>
 
       <div className={'profile__container'}>
-        <h1 className={'profile__title'}>{`Привет, ${user.name}!`}</h1>
+        <h1 className={'profile__title'}>{`Привет, ${name}!`}</h1>
         <div className={'profile__inputs'}>
           <div className={'profile__inputs-block'}>
             <label htmlFor="name" className={'profile__label'}>
