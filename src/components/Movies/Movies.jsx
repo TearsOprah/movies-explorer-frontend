@@ -45,6 +45,10 @@ export default function Movies({ allMovies, errorFetchAllMovies, savedMovies, ha
     }
   }, [shortFilmOnly]);
 
+  useEffect(() => {
+    handleSearch();
+  }, [searchQuery, shortFilmOnly]);
+
   return (
     <main className={'movies'}>
       <SearchForm
