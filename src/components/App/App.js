@@ -60,6 +60,7 @@ export default function App() {
   const handleLogout = () => {
     setLoggedIn(false);
     setUser(null);
+    setSavedMovies([])
   };
 
   // ПОЛУЧАЕМ ВСЕ ФИЛЬМЫ
@@ -99,7 +100,7 @@ export default function App() {
 
   useEffect(() => {
     fetchSavedMovies();
-  }, []);
+  }, [user]);
 
   // ЛАЙКИ
   const handleLikeClick = async (isLiked, savedMovieId, movieData) => {

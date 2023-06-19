@@ -18,32 +18,9 @@ export default function SavedMovies({ savedMovies, errorFetchSavedMovies, handle
     handleToggleShortFilmOnly,
   } = useMoviesSearch(savedMovies);
 
-  // Чтение сохраненных данных из локального хранилища при монтировании компонента
   useEffect(() => {
-    const savedSearchQuery = localStorage.getItem('savedSearchQuery');
-    const savedShortFilmOnly = localStorage.getItem('savedShortFilmOnly');
-
-    if (savedSearchQuery && searchQuery !== savedSearchQuery) {
-      setSearchQuery(savedSearchQuery);
-    }
-
-    if (savedShortFilmOnly && shortFilmOnly !== (savedShortFilmOnly === 'true')) {
-      handleToggleShortFilmOnly(savedShortFilmOnly === 'true');
-    }
-  }, []);
-
-  // Сохранение данных в локальное хранилище при изменении searchQuery или shortFilmOnly
-  useEffect(() => {
-    localStorage.setItem('savedSearchQuery', searchQuery);
-  }, [searchQuery]);
-
-  useEffect(() => {
-    localStorage.setItem('savedShortFilmOnly', shortFilmOnly.toString());
-  }, [shortFilmOnly]);
-
-  useEffect(() => {
-    handleSearch();
-  }, [searchQuery, shortFilmOnly, savedMovies]);
+    handleSearch(searchQuery, shortFilmOnly);
+  }, [savedMovies]);
 
   return (
     <main className={'movies'}>

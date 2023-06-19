@@ -59,6 +59,8 @@ export default function Profile({ handleLogout, mainApi, setUser }) {
   // выход из аккаунта
   const signOut = () => {
     localStorage.removeItem('jwt');
+    localStorage.removeItem('searchQuery');
+    localStorage.removeItem('shortFilmOnly');
     handleLogout();
     navigate('/', { replace: true });
   };

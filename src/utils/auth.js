@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://api.movies.tearsoprah.nomoredomains.rocks';
+import { BASE_URL } from "./constants";
 
 // метод для проверки ответа сервера
 const getResponseData = (res) => {

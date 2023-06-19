@@ -8,7 +8,7 @@ const ProtectedRouteElement = ({ element: Component, loggedIn, isLoading, ...pro
     return <Preloader />;
   }
 
-  return loggedIn ? <Component {...props} /> : <Navigate to="/signin" replace />;
+  return loggedIn ? <Component {...props} /> : <Navigate to="/" replace />;
 };
 
 export default ProtectedRouteElement;
