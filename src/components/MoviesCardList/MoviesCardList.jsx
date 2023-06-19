@@ -2,6 +2,13 @@ import './MoviesCardList.css'
 import MoviesCard from "../MoviesCard/MoviesCard";
 import MoviesLoader from "../MoviesLoader/MoviesLoader";
 import { useEffect, useState } from 'react';
+import {
+  INITIAL_VISIBLE_CARDS_LARGE_SCREEN,
+  INITIAL_VISIBLE_CARDS_MEDIUM_SCREEN,
+  INITIAL_VISIBLE_CARDS_SMALL_SCREEN,
+  ADDITIONAL_CARDS_LARGE_SCREEN,
+  ADDITIONAL_CARDS_SMALL_SCREEN,
+} from '../../utils/constants';
 
 export default function MoviesCardList({ movies, ...props }) {
 
@@ -10,20 +17,20 @@ export default function MoviesCardList({ movies, ...props }) {
   // утсановка кол-ва изначально показываемых карточек
   function getInitialVisibleCards() {
     if (window.innerWidth >= 880) {
-      return 12;
+      return INITIAL_VISIBLE_CARDS_LARGE_SCREEN;
     } else if (window.innerWidth >= 600) {
-      return 8;
+      return INITIAL_VISIBLE_CARDS_MEDIUM_SCREEN;
     } else {
-      return 5;
+      return INITIAL_VISIBLE_CARDS_SMALL_SCREEN;
     }
   }
 
   // показ дополнительных карточек по кнопке еще
   const handleShowMore = () => {
     if (window.innerWidth >= 880) {
-      setVisibleCards((prevVisibleCards) => prevVisibleCards + 3);
+      setVisibleCards((prevVisibleCards) => prevVisibleCards + ADDITIONAL_CARDS_LARGE_SCREEN);
     } else {
-      setVisibleCards((prevVisibleCards) => prevVisibleCards + 2);
+      setVisibleCards((prevVisibleCards) => prevVisibleCards + ADDITIONAL_CARDS_SMALL_SCREEN);
     }
   };
 

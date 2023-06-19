@@ -1,4 +1,9 @@
-const PASSWORD_REG = /^(?=.*[A-z])(?=.*\d)(?=.*[!@#$%^&*])(?=.{8,})/;
+import {
+  PASSWORD_REG,
+  NAME_REG,
+  EMAIL_REG,
+  MIN_PASSWORD_LENGTH
+} from "./constants";
 
 export function validateRegisterForm(formValue) {
   const errors = {};
@@ -68,17 +73,15 @@ export function validateProfileForm(formValue, fieldToValidate) {
 
 export function isNameValid(name) {
   // Валидация имени (латиница, кириллица, пробелы и дефис)
-  const nameRegex = /^[A-Za-zА-Яа-яЁё\s-]+$/;
-  return nameRegex.test(name);
+  return NAME_REG.test(name);
 }
 
 export function isEmailValid(email) {
   // Валидация email
-  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-  return emailRegex.test(email);
+  return EMAIL_REG.test(email);
 }
 
 export function isPasswordValid(password) {
-  // Валидация пароля (не менее 8 символов)
-  return password.length >= 8;
+  // Валидация длины пароля
+  return password.length >= MIN_PASSWORD_LENGTH;
 }

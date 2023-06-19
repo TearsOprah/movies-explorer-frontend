@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { SHORT_FILM_DURATION } from './constants';
 
 const useMoviesSearch = (movies) => {
   const [searchedMovies, setSearchedMovies] = useState([]);
@@ -25,7 +26,7 @@ const useMoviesSearch = (movies) => {
       );
 
       if (shortFilmOnly) {
-        filteredMovies = filteredMovies.filter((movie) => movie.duration <= 40);
+        filteredMovies = filteredMovies.filter((movie) => movie.duration <= SHORT_FILM_DURATION);
       }
 
       setSearchedMovies(filteredMovies);
@@ -40,7 +41,7 @@ const useMoviesSearch = (movies) => {
       // Если строка поиска пустая и включены короткометражки,
       // отфильтровать все сохраненные фильмы по короткометражкам
       if (shortFilmOnly) {
-        const shortMovies = movies.filter((movie) => movie.duration <= 40);
+        const shortMovies = movies.filter((movie) => movie.duration <= SHORT_FILM_DURATION);
         setSearchedMovies(shortMovies);
       } else {
         setSearchedMovies(movies);
