@@ -1,23 +1,92 @@
 import './Login.css'
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import logoIcon from "../../images/logo.svg";
-import {Link} from "react-router-dom";
-export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+import {Link, useNavigate} from "react-router-dom";
+import {authorize} from "../../utils/auth";
+import {validateLoginForm} from "../../utils/validation";
+export default function Login({ handleLogin, loggedIn }) {
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Если пользователь уже авторизован, перенаправляем на главную страницу
+    if (loggedIn) {
+      navigate('/');
+    }
+  }, [loggedIn, navigate]);
+
+  // стейт для полей формы
+  const [formValue, setFormValue] = useState({
+    email: '',
+    password: ''
+  })
+
+  // стейт ошибок валидации полей
+  const [errors, setErrors] = useState({});
+
+  // стейт для ошибки сервера
+  const [serverError, setServerError] = useState('');
+
+  // изменение значений полей
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+
+    setFormValue({
+      ...formValue,
+      [name]: value
+    });
+
+    const fieldErrors = validateField(name, value);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: fieldErrors
+    }));
+  }
+
+  // отправка формы
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formErrors = validateLoginForm(formValue);
+
+    if (
+      Object.values(errors).every((value) => value === '') &&
+      formValue.email.trim() !== '' &&
+      formValue.password.trim() !== ''
+    ) {
+      authorize(formValue.email, formValue.password)
+        .then((data) => {
+          if (data.token) {
+            setFormValue({ email: "", password: "" });
+            setErrors({ email: "", password: "" });
+            handleLogin();
+            navigate("/movies", { replace: true });
+          }
+        })
+        .catch((err) => {
+          if (err === '401') {
+            setServerError('Вы ввели неправильный логин или пароль.')
+          } else {
+            setServerError('При авторизации произошла ошибка. Токен не передан или передан не в том формате.')
+          }
+        });
+    } else {
+      setErrors(formErrors);
+    }
   };
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
+  // валидация полей
+  const validateField = (name, value) => {
+    let fieldErrors = '';
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // логика обработки авторизации здесь
-  };
+    if (name === 'email') {
+      fieldErrors = validateLoginForm({ ...formValue, [name]: value }).email || '';
+    } else if (name === 'password') {
+      fieldErrors = validateLoginForm({ ...formValue, [name]: value }).password || '';
+    }
+
+    return fieldErrors;
+  }
 
   return (
     <form className={'auth'} onSubmit={handleSubmit}>
@@ -33,30 +102,52 @@ export default function Login() {
             <label className={'auth__input-name'} htmlFor="email">Email</label>
             <input
               className={'auth__input active-input'}
-              type="email"
               id="email"
+              name="email"
+              type="email"
+              value={formValue.email}
+              onChange={handleChange}
               placeholder=""
-              value={email}
-              onChange={handleEmailChange}
+              required
             />
           </div>
+          {errors.email && <p className="auth__errors">{errors.email}</p>}
           <div className={'auth__input-block'}>
             <label className={'auth__input-name'} htmlFor="password">Пароль</label>
             <input
               className={'auth__input'}
-              type="password"
               id="password"
+              name="password"
+              type="password"
+              value={formValue.password}
+              onChange={handleChange}
               placeholder=""
-              value={password}
-              onChange={handlePasswordChange}
+              required
             />
           </div>
-          <p className={'auth__errors'}>Что-то пошло не так...</p>
+          {errors.password && <p className="auth__errors">{errors.password}</p>}
         </div>
       </div>
 
       <div className={'auth__buttons-block'}>
-        <button className={'auth__button animation-transition hovered-button'} type="submit">Войти</button>
+        {serverError && (<p className={'auth__errors centred-block'}>{serverError}</p>)}
+        <button
+          className={`auth__button animation-transition hovered-button ${
+            !Object.values(errors).every((value) => value === '') ||
+            !formValue.email ||
+            !formValue.password
+              ? 'disabled-button'
+              : ''
+          }`}
+          type="submit"
+          disabled={
+            !Object.values(errors).every((value) => value === '') ||
+            !formValue.email ||
+            !formValue.password
+          }
+        >
+          Войти
+        </button>
         <div className={'auth__sign-block'}>
           <p className={'auth__sign-label'}>Ещё не зарегистрированы?</p>
           <Link className={'auth__sign-link animation-transition hovered-link'} to={'/signup'}>Регистрация</Link>

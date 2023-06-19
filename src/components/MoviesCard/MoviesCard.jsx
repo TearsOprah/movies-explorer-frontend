@@ -1,10 +1,9 @@
 import './MoviesCard.css'
-import cardImg from '../../images/cards/film_1.png'
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export default function MoviesCard() {
-  const [isLiked, setIsLiked] = useState(false);
+export default function MoviesCard({ movieData, isLiked, savedMovieId, handleLikeClick }) {
+
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -15,12 +14,13 @@ export default function MoviesCard() {
     setIsHovered(false);
   };
 
-  const handleLikeClick = () => {
-    setIsLiked(!isLiked);
-  };
-
   const location = useLocation();
   const isActive = location.pathname === '/saved-movies';
+
+  // преобразование формата длительности
+  const minutes = Math.floor(movieData.duration / 60); // Получение минут
+  const seconds = movieData.duration % 60; // Получение оставшихся секунд
+  const formattedDuration = `${minutes}ч ${seconds}м`;
 
   return (
     <li
@@ -28,20 +28,27 @@ export default function MoviesCard() {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <img className={'card__image'} src={cardImg} alt={'film screenshot'} />
+      <a href={movieData.trailerLink} target={'_blank'}>
+        <img className={'card__image animation-transition hovered-link'}
+             src={movieData.image.url ? 'https://api.nomoreparties.co/' + movieData.image.url : movieData.image}
+             alt={movieData.nameRU} />
+      </a>
       <div className={'card__description'}>
         <div className={'card__info'}>
-          <p className={'card__name'}>Соберись перед прыжком</p>
+          <p className={'card__name'}>{movieData.nameRU}</p>
           {isActive ? (
-            <button className={'card__delete'}></button>
+            <button
+              className={'card__delete hovered-button'}
+              onClick={() => handleLikeClick(true, movieData._id, movieData)}>
+            </button>
           ) : (
             <button
               className={`card__like ${isLiked ? 'card__like_active' : ''} animation-transition hovered-button`}
-              onClick={handleLikeClick}
-            ></button>
+              onClick={() => handleLikeClick(isLiked, savedMovieId, movieData)}>
+            </button>
           )}
         </div>
-        <p className={'card__duration'}>1ч 10м</p>
+        <p className={'card__duration'}>{formattedDuration}</p>
       </div>
     </li>
   );
