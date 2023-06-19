@@ -212,6 +212,7 @@ export default function App() {
               element={Profile}
               handleLogout={handleLogout}
               mainApi={mainApi}
+              setUser={setUser}
             />
           }
         />

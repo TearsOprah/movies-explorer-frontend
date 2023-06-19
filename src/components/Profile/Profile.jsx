@@ -4,7 +4,7 @@ import CurrentUserContext from "../CurrentUserContext/CurrentUserContext";
 import { useNavigate } from 'react-router-dom';
 import { validateProfileForm } from "../../utils/validation";
 
-export default function Profile({ handleLogout, mainApi }) {
+export default function Profile({ handleLogout, mainApi, setUser }) {
   const currentUser = useContext(CurrentUserContext);
   const navigate = useNavigate();
   const [name, setName] = useState(currentUser.name);
@@ -12,6 +12,7 @@ export default function Profile({ handleLogout, mainApi }) {
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('')
+  const [isSaved, setIsSaved] = useState(false);
 
   // изменение и валидация полей
   const handleNameChange = (e) => {
@@ -46,7 +47,8 @@ export default function Profile({ handleLogout, mainApi }) {
     try {
       await mainApi.updateProfile(name, email);
       setIsEditing(false);
-      // Логика после успешного обновления данных
+      setIsSaved(true);
+      setUser({ ...currentUser, name, email });
     } catch (error) {
       // Обработка ошибки при обновлении данных
       setServerError('При обновлении профиля произошла ошибка.')
@@ -96,20 +98,20 @@ export default function Profile({ handleLogout, mainApi }) {
           {errors.email && <span className="auth__errors">{errors.email}</span>}
         </div>
       </div>
-
       {isEditing ? (
         <div className="profile__buttons-block">
           {serverError && <span className="auth__errors centred-block">{serverError}</span>}
           <button
-            className={`profile__save-button ${Object.keys(errors).length > 0 ? 'disabled-button' : ''}`}
+            className={`profile__save-button ${Object.keys(errors).length > 0 || (name === currentUser.name && email === currentUser.email) ? 'disabled-button' : ''}`}
             onClick={handleSaveClick}
-            disabled={Object.keys(errors).length > 0}
+            disabled={!isEditing || (name === currentUser.name && email === currentUser.email) || Object.keys(errors).length > 0}
           >
             Сохранить
           </button>
         </div>
       ) : (
         <div className="profile__buttons-block">
+          {isSaved && <span className="auth__success centred-block">Профиль успешно сохранен.</span>}
           <button
             className="profile__edit-button animation-transition hovered-button"
             onClick={handleEditClick}

@@ -19,3 +19,7 @@
 .centred-block {
   text-align: center;
 }
+
+.auth__success {
+  color: #2BE080;
+}
