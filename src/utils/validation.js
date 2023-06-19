@@ -1,3 +1,5 @@
+const PASSWORD_REG = /^(?=.*[A-z])(?=.*\d)(?=.*[!@#$%^&*])(?=.{8,})/;
+
 export function validateRegisterForm(formValue) {
   const errors = {};
 
@@ -17,6 +19,8 @@ export function validateRegisterForm(formValue) {
     errors.password = 'Введите пароль';
   } else if (!isPasswordValid(formValue.password)) {
     errors.password = 'Пароль должен содержать не менее 8 символов';
+  } else if (!PASSWORD_REG.test(formValue.password)) {
+    errors.password = 'Пароль должен содержать латинские буквы, цифры, специальные символы и быть не менее 8 символов';
   }
 
   return errors;
