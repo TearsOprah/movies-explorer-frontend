@@ -11,10 +11,130 @@ import {useEffect, useState} from "react";
 import Navigation from "../Navigation/Navigation";
 import ProfileButton from "../ProfileButton/ProfileButton";
 import Header from "../Header/Header";
+import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute";
+import { checkToken } from '../../utils/auth';
+import NavTab from "../NavTab/NavTab";
+import CurrentUserContext from "../CurrentUserContext/CurrentUserContext";
+import MainApi from "../../utils/MainApi";
+import MoviesApi from "../../utils/MoviesApi";
+const mainApi = new MainApi('https://api.movies.tearsoprah.nomoredomains.rocks');
 
 export default function App() {
 
-  // логика для бургер меню
+  // АВТОРИЗАЦИЯ И ПРОВЕРКА ТОКЕНА
+
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    handleTokenCheck()
+  }, [loggedIn])
+
+  const handleTokenCheck = () => {
+    if (localStorage.getItem('jwt')) {
+      const jwt = localStorage.getItem('jwt');
+      checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            setUser({
+              _id: res._id,
+              email: res.email,
+              name: res.name
+            });
+          }
+        })
+        .finally(() => {
+          setIsLoading(false); // Проверка завершена, устанавливаем isLoading в false
+        });
+    } else {
+      setIsLoading(false); // Если токен отсутствует, сразу устанавливаем isLoading в false
+    }
+  };
+
+  const handleLogin = () => {
+    setLoggedIn(true);
+  }
+
+  const handleLogout = () => {
+    setLoggedIn(false);
+    setUser(null);
+    setSavedMovies([])
+  };
+
+  // ПОЛУЧАЕМ ВСЕ ФИЛЬМЫ
+  useEffect(() => {
+    fetchAllMovies();
+  }, []);
+
+  const [allMovies, setAllMovies] = useState([]);
+  const [errorFetchAllMovies, setErrorFetchAllMovies] = useState('');
+  const fetchAllMovies = () => {
+    setErrorFetchAllMovies('');
+
+    MoviesApi.getMovies()
+      .then((data) => {
+        setAllMovies(data);
+      })
+      .catch(() => {
+        setErrorFetchAllMovies('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.');
+      });
+  };
+
+  // ПОЛУЧАЕМ СОХРАНЕННЫЕ ФИЛЬМЫ
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [errorFetchSavedMovies, setErrorFetchSavedMovies] = useState('');
+
+  const fetchSavedMovies = () => {
+    setErrorFetchSavedMovies('');
+
+    mainApi.getMovies()
+      .then((data) => {
+        setSavedMovies(data);
+      })
+      .catch(() => {
+        setErrorFetchSavedMovies('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.');
+      });
+  };
+
+  useEffect(() => {
+    fetchSavedMovies();
+  }, [user]);
+
+  // ЛАЙКИ
+  const handleLikeClick = async (isLiked, savedMovieId, movieData) => {
+    try {
+      if (isLiked) {
+        // Если фильм уже лайкнут, удаляем его
+        await mainApi.deleteMovie(savedMovieId);
+      } else {
+        // Если фильм не лайкнут, создаем его
+        const movie = {
+          country: movieData.country,
+          director: movieData.director,
+          duration: movieData.duration,
+          year: movieData.year,
+          description: movieData.description,
+          image: 'https://api.nomoreparties.co/' + movieData.image.url,
+          trailerLink: movieData.trailerLink,
+          thumbnail: 'https://api.nomoreparties.co/' + movieData.image.previewUrl,
+          movieId: movieData.id,
+          nameRU: movieData.nameRU,
+          nameEN: movieData.nameEN,
+        };
+        await mainApi.createMovie(movie);
+      }
+
+      // После успешного выполнения операции вызываем повторную загрузку сохраненных фильмов
+      fetchSavedMovies();
+
+    } catch (error) {
+      console.error('Ошибка при обработке лайка:', error);
+    }
+  };
+
+  // ЛОГИКА ДЛЯ БУРГЕР МЕНЮ
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -37,26 +157,77 @@ export default function App() {
   }, []);
 
   const location = useLocation();
-  const headerPaths = ['/movies', '/saved-movies', '/profile'];
+  const headerPaths = ['/movies', '/saved-movies', '/profile', '/'];
   const shouldRenderHeader = headerPaths.includes(location.pathname);
 
   return (
-    <div>
+    <CurrentUserContext.Provider value={user}>
       {shouldRenderHeader && (
         <Header>
-          <Navigation isMenuOpen={isMenuOpen} closeMenu={closeMenu} toggleMenu={toggleMenu} />
-          {!isMenuOpen && <ProfileButton hidden={true} />}
+          {loggedIn ? (
+            <>
+              <Navigation isMenuOpen={isMenuOpen} closeMenu={closeMenu} toggleMenu={toggleMenu} />
+              {!isMenuOpen && <ProfileButton closeMenu={closeMenu} hidden={true} />}
+            </>
+          ) : (
+            <NavTab />
+          )}
         </Header>
       )}
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/movies" element={<Movies />} />
-        <Route path="/saved-movies" element={<SavedMovies />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/signin" element={<Login />} />
-        <Route path="/signup" element={<Register />} />
+
+        <Route
+          path="/movies"
+          element={
+            <ProtectedRouteElement
+              loggedIn={loggedIn}
+              isLoading={isLoading}
+              element={Movies}
+              allMovies={allMovies}
+              errorFetchAllMovies={errorFetchAllMovies}
+              savedMovies={savedMovies}
+              handleLikeClick={handleLikeClick}
+            />
+          }
+        />
+        <Route
+          path="/saved-movies"
+          element={
+            <ProtectedRouteElement
+              loggedIn={loggedIn}
+              isLoading={isLoading}
+              element={SavedMovies}
+              savedMovies={savedMovies}
+              errorFetchSavedMovies={errorFetchSavedMovies}
+              handleLikeClick={handleLikeClick}
+            />
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRouteElement
+              loggedIn={loggedIn}
+              isLoading={isLoading}
+              element={Profile}
+              handleLogout={handleLogout}
+              mainApi={mainApi}
+              setUser={setUser}
+            />
+          }
+        />
+
+        <Route path="/signin"
+               element={<Login handleLogin={handleLogin} loggedIn={loggedIn} />}
+        />
+
+        <Route path="/signup"
+               element={<Register handleLogin={handleLogin} loggedIn={loggedIn} />}
+        />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </div>
+    </CurrentUserContext.Provider>
   );
 }

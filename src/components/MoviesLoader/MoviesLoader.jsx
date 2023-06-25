@@ -1,8 +1,8 @@
 import './MoviesLoader.css'
-export default function MoviesLoader() {
+export default function MoviesLoader({ onClick }) {
   return (
     <div className={'movies-loader'}>
-      <button className={'movies-loader__button animation-transition hovered-button'}>Ещё</button>
+      <button onClick={onClick} className={'movies-loader__button animation-transition hovered-button'}>Ещё</button>
     </div>
   )
 }

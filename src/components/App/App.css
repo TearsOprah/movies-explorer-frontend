@@ -11,3 +11,15 @@
   cursor: pointer;
   opacity: 70%;
 }
+
+.disabled-button {
+  opacity: 70%;
+}
+
+.centred-block {
+  text-align: center;
+}
+
+.auth__success {
+  color: #2BE080;
+}

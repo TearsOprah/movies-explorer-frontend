@@ -1,15 +1,54 @@
-import './SavedMovies.css'
+import './SavedMovies.css';
+import { useEffect } from 'react';
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
-export default function SavedMovies() {
+import useMoviesSearch from "../../utils/useMoviesSearch";
+import Preloader from "../Preloader/Preloader";
+
+export default function SavedMovies({ savedMovies, errorFetchSavedMovies, handleLikeClick }) {
+  const {
+    searchedMovies,
+    isSearching,
+    error,
+    shortFilmOnly,
+    searchQuery,
+    setSearchQuery,
+    handleSearch,
+    handleToggleShortFilmOnly,
+  } = useMoviesSearch(savedMovies);
+
+  useEffect(() => {
+    handleSearch(searchQuery, shortFilmOnly);
+  }, [savedMovies]);
+
   return (
-    <main className={'saved-movies'}>
-      <SearchForm />
-      <MoviesCardList />
-      <div className={'saved-movies__emp'}>
-      </div>
+    <main className={'movies'}>
+      <SearchForm
+        onSearch={handleSearch}
+        onToggle={handleToggleShortFilmOnly}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        checked={shortFilmOnly}
+      />
+
+      {isSearching ? (
+        <Preloader />
+      ) : (
+        <>
+          {searchedMovies.length > 0 ? (
+            <>
+              <MoviesCardList movies={searchedMovies} handleLikeClick={handleLikeClick} />
+            </>
+          ) : (
+            <p className={'error-message'}>
+              {errorFetchSavedMovies || (error && !isSearching) ? errorFetchSavedMovies || error : ''}
+            </p>
+          )}
+        </>
+      )}
+
       <Footer />
     </main>
-  )
+  );
 }
