@@ -1,6 +1,6 @@
 # Финальный проект на веб-факультете Яндекс Практикум
 
-## Cсылка на сайт [сайт](https://movies.tearsoprah.nomoredomains.rocks)
+## Cсылка на [сайт](https://movies.tearsoprah.nomoredomains.rocks)
 ## Макет [Figma](https://www.figma.com/file/Ev7OoIEpNiIUxpwX7GgdRv/Diploma-(Copy)?type=design&node-id=891%3A3857&t=rFSdoMpy7xsiWTPJ-1)
 
 
