@@ -1,5 +1,21 @@
-# movies-explorer-frontend
+# Финальный проект на веб-факультете Яндекс Практикум
 
-## ссылка на сайт movies.tearsoprah.nomoredomains.rocks
-## пулл реквест https://github.com/TearsOprah/movies-explorer-frontend/pull/3
-## макет https://www.figma.com/file/Ev7OoIEpNiIUxpwX7GgdRv/Diploma-(Copy)?type=design&node-id=891%3A3857&t=rFSdoMpy7xsiWTPJ-1
+## Cсылка на сайт [сайт](https://movies.tearsoprah.nomoredomains.rocks)
+## Макет [Figma](https://www.figma.com/file/Ev7OoIEpNiIUxpwX7GgdRv/Diploma-(Copy)?type=design&node-id=891%3A3857&t=rFSdoMpy7xsiWTPJ-1)
+
+
+## Это сервис, в котором можно найти фильмы по запросу и сохранить в личном кабинете.
+
+
+## Что было сделано:
+- ### настроена инфраструктура и создан сервер на express;
+- ### подключена база данных, созданы схемы и модели ресурсов API;
+- ### реализовано логирование, аутентификация и авторизация на сервере;
+- ### бэкенд задеплоен на Яндекс Облако;
+- ### свёрстаны компоненты на React, разметка портирована в его формат;
+- ### описана логика и вёрстка страниц регистрации, логина, редактирования профиля, сохранённых фильмов;
+- ### реализованы асинхронные GET- и POST-запросы к API;
+- ### проработаны авторизованные и неавторизованные состояния, сохранение фильмов в профиле;
+- ### полученные фильмы фильтруются на стороне клиента.
+
+## Инструменты и стек: #HTML #CSS #React #Express #MongoDB #NodeJS #API  #Nginx #JWT #Postman
